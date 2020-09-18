@@ -1,12 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
+import CustomerRegistration from "./pages/CustomerRegistration";
+
 // Import any page here
 
 function Routes() {
   return (
     <BrowserRouter>
-      {/* <Route path="/" exact component={Page here}/> */}
+      <Route path="/Cadastro" exact component={CustomerRegistration} />
     </BrowserRouter>
   );
 }
