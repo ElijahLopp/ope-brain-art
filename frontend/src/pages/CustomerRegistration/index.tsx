@@ -1,59 +1,71 @@
 import React from "react";
-
 import { useForm } from "react-hook-form";
-
+import { useToasts } from "react-toast-notifications";
+import api from "../../services/api";
 import "./styles.css";
 
 export default function CostomerRegistration() {
-  const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = (data: any) => console.log(data);
-
-  console.log(watch("example")); // watch input value by passing the name of it
+  const { addToast } = useToasts();
+  const { register, handleSubmit } = useForm();
+  const onSubmit = async (data: any) => {
+    try {
+      await api.post("patients", data);
+      addToast("Paciente cadastrado com sucesso", {
+        appearance: "success",
+        autoDismiss: true,
+      });
+    } catch (err) {
+      addToast("Erro ao cadastrar paciente", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    }
+  };
 
   return (
     <fieldset>
       <p>Cadastro paciente</p>
       <section>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="nomePaciente">Nome do paciente</label>
+          <label htmlFor="nome">Nome do paciente</label>
           <br />
-          <input name="nomePaciente" ref={register} />
+          <input name="nome" ref={register} />
 
           <br />
 
-          <label htmlFor="ruaPaciente">Endereço</label>
+          <label htmlFor="rua">Endereço</label>
           <br />
-          <input name="ruaPaciente" ref={register} />
+          <input name="rua" ref={register} />
 
           <br />
 
-          <label htmlFor="bairroPaciente">Bairro</label>
+          <label htmlFor="bairro">Bairro</label>
           <br />
-          <input name="bairroPaciente" ref={register} />
+          <input name="bairro" ref={register} />
 
           <br />
 
-          <label htmlFor="cepPaciente">CEP</label>
+          <label htmlFor="cep">CEP</label>
           <br />
-          <input name="cepPaciente" ref={register} />
+          <input name="cep" ref={register} />
 
           <br />
 
-          <label htmlFor="numCellPaciente">Número da casa</label>
+          <label htmlFor="numero">Número da casa</label>
           <br />
-          <input name="numCellPaciente" ref={register} />
+          <input name="numero" ref={register} />
 
           <br />
 
-          <label htmlFor="complementoPaciente">Complemento</label>
+          <label htmlFor="complemento">Complemento</label>
           <br />
-          <input name="complementoPaciente" ref={register} />
+          <input name="complemento" ref={register} />
 
           <br />
 
-          <label htmlFor="dataNascimentoPaciente">Data de nascimento</label>
+          <label htmlFor="dataNascimento">Data de nascimento</label>
           <br />
-          <input name="dataNascimentoPaciente" ref={register} />
+          <input name="dataNascimento" ref={register} />
 
           <br />
 

@@ -1,0 +1,7 @@
+export enum ConfigEnum {
+  HOST = 'HOST',
+  PORT = 'PORT',
+  DATABASE_URI = 'DATABASE_URI',
+  JWT_SECRET = 'JWT_SECRET',
+  JWT_EXPIRES = 'JWT_EXPIRES',
+}

@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-
 import CustomerRegistration from "./pages/CustomerRegistration";
 
 // Import any page here
@@ -8,7 +7,7 @@ import CustomerRegistration from "./pages/CustomerRegistration";
 function Routes() {
   return (
     <BrowserRouter>
-      <Route path="/Cadastro" exact component={CustomerRegistration} />
+      <Route path="/" exact component={CustomerRegistration} />
     </BrowserRouter>
   );
 }
