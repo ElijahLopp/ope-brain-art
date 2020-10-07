@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import CustomerRegistration from "./pages/CustomerRegistration";
+import Landing from "./pages/Landing";
 
 // Import any page here
 
 function Routes() {
   return (
     <BrowserRouter>
-      <Route path="/Cadastro" exact component={CustomerRegistration} />
+      <Route path="/Landing" exact component={Landing} />
     </BrowserRouter>
   );
 }
