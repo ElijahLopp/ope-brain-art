@@ -1,11 +1,14 @@
 import React from "react";
-
+import { ToastProvider } from "react-toast-notifications";
+import "./assets/styles/global.css";
 import Routes from "./routes";
 
-import "./assets/styles/global.css";
-
 function App() {
-  return <Routes />;
+  return (
+    <ToastProvider>
+      <Routes />
+    </ToastProvider>
+  );
 }
 
 export default App;
