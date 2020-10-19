@@ -2,7 +2,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useToasts } from "react-toast-notifications";
 import api from "../../services/api";
-import "./styles.css";
+import "./style.css";
+
+import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer";
 
 export default function CostomerRegistration() {
   const { addToast } = useToasts();
@@ -23,55 +26,57 @@ export default function CostomerRegistration() {
   };
 
   return (
-    <fieldset>
-      <p>Cadastro paciente</p>
-      <section>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label htmlFor="nome">Nome do paciente</label>
-          <br />
-          <input name="nome" ref={register} />
+    <div>
+      <NavBar />
+        <div className="form-box">
+          <h1 className="form-title">Cadastro de Paciente</h1>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <label htmlFor="nome">Nome do paciente</label>
+            <br />
+            <input name="nome" ref={register} />
 
-          <br />
+            <br />
 
-          <label htmlFor="rua">Endereço</label>
-          <br />
-          <input name="rua" ref={register} />
+            <label htmlFor="rua">Endereço</label>
+            <br />
+            <input name="rua" ref={register} />
 
-          <br />
+            <br />
 
-          <label htmlFor="bairro">Bairro</label>
-          <br />
-          <input name="bairro" ref={register} />
+            <label htmlFor="bairro">Bairro</label>
+            <br />
+            <input name="bairro" ref={register} />
 
-          <br />
+            <br />
 
-          <label htmlFor="cep">CEP</label>
-          <br />
-          <input name="cep" ref={register} />
+            <label htmlFor="cep">CEP</label>
+            <br />
+            <input name="cep" ref={register} />
 
-          <br />
+            <br />
 
-          <label htmlFor="numero">Número da casa</label>
-          <br />
-          <input name="numero" ref={register} />
+            <label htmlFor="numero">Número da casa</label>
+            <br />
+            <input name="numero" ref={register} />
 
-          <br />
+            <br />
 
-          <label htmlFor="complemento">Complemento</label>
-          <br />
-          <input name="complemento" ref={register} />
+            <label htmlFor="complemento">Complemento</label>
+            <br />
+            <input name="complemento" ref={register} />
 
-          <br />
+            <br />
 
-          <label htmlFor="dataNascimento">Data de nascimento</label>
-          <br />
-          <input name="dataNascimento" ref={register} />
+            <label htmlFor="dataNascimento">Data de nascimento</label>
+            <br />
+            <input name="dataNascimento" ref={register} />
 
-          <br />
+            <br />
 
-          <button type="submit">Enviar</button>
-        </form>
-      </section>
-    </fieldset>
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+      <Footer />
+    </div>
   );
 }

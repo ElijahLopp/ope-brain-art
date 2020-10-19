@@ -1,0 +1,16 @@
+.form-box{
+  border: 1px solid black;
+  height: 500px;
+  width: 500px;
+  margin: 0 auto;
+  margin-top: 75px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form-title{
+  display: block;
+  margin-bottom: 80px;
+}
