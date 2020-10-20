@@ -3,6 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const pool = require("./connec")
 
+
+let { Client } = require('pg');
+
 // APP
 const app = express();
 
@@ -12,14 +15,22 @@ app.use(express.json());
 
 //ROUTES
 // cadastro de paciente
-app.post("/cadastro", async(req, res) => {
-  try {
-    const { nomepaciente } = req.body;
-    const cadastro = await pool.query(`INSERT INTO paciente (nomepaciente) VALUES (${nomepaciente})`);
+// app.post("/cadastro", async(req, res) => {
+//   try {
+//     const { nomepaciente } = req.body;
+//     const cadastro = await pool.query(`INSERT INTO paciente (nomepaciente) VALUES (${nomepaciente})`);
 
-    console.log(cadastro);
+//     console.log(cadastro);
+//   } catch (err) {
+//     console.error(err.message);
+//   }
+// })
+
+app.get("/cadastro", async(req, res) => {
+  try {
+    pool.connect()
   } catch (err) {
-    console.error(err.message);
+    console.log(err);
   }
 })
 
