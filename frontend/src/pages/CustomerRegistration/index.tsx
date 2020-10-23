@@ -30,46 +30,67 @@ export default function CostomerRegistration() {
       <NavBar />
         <div className="form-box">
           <h1 className="form-title">Cadastro de Paciente</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="nome">Nome do paciente</label>
-            <br />
+          <form onSubmit={handleSubmit(onSubmit)} className="form-style">
+            <label htmlFor="nome">Nome do paciente: </label>
             <input name="nome" ref={register} />
 
             <br />
 
-            <label htmlFor="rua">Endereço</label>
-            <br />
-            <input name="rua" ref={register} />
+            <label htmlFor="birth-date">Data de Nascimento: </label>
+            <input type="date" name="birth-date" ref={register} />
 
             <br />
 
-            <label htmlFor="bairro">Bairro</label>
-            <br />
-            <input name="bairro" ref={register} />
+            <label htmlFor="rg">RG: </label>
+            <input type="text" name="rg" autoComplete="off" required />
+
+            <label htmlFor="cpf">CPF: </label>
+            <input type="text" name="cpf" autoComplete="off" required />
 
             <br />
 
-            <label htmlFor="cep">CEP</label>
+            <label htmlFor="phone">Contato: </label>
+            <input type="phone" name="phone" autoComplete="off" required placeholder="(00) 99999-999" />
+
             <br />
+
+            <label htmlFor="email">Email: </label>
+            <input type="email" name="email" autoComplete="off" required />
+
+            <br/>
+            <label htmlFor="cep">CEP: </label>
             <input name="cep" ref={register} />
 
             <br />
 
-            <label htmlFor="numero">Número da casa</label>
-            <br />
+            <label htmlFor="rua">Rua: </label>
+            <input name="rua" ref={register} />
+
+            <label htmlFor="numero">Nº: </label>
             <input name="numero" ref={register} />
 
             <br />
 
-            <label htmlFor="complemento">Complemento</label>
-            <br />
+            <label htmlFor="bairro">Bairro: </label>
+            <input name="bairro" ref={register} />
+
+            <label htmlFor="complemento">Complemento: </label>
             <input name="complemento" ref={register} />
 
             <br />
 
-            <label htmlFor="dataNascimento">Data de nascimento</label>
+            <label htmlFor="name-mot">Nome da Mãe: </label>
+            <input type="text" name="name-mot" autoComplete="off" />
+
             <br />
-            <input name="dataNascimento" ref={register} />
+
+            <label htmlFor="name-fat">Nome da Pai: </label>
+            <input type="text" name="name-fat" autoComplete="off" />
+
+            <br />
+
+            <label htmlFor="avatar">Escolha um imagem:</label>
+            <input type="file" name="avatar" accept="image/x-png, image/jpeg" />
 
             <br />
 
