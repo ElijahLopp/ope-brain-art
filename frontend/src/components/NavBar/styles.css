@@ -2,19 +2,12 @@
   background-color: var(--color-primary);
 }
 
-nav a img.logo-navbar {
-  width: 30px;
-}
-
-a.navbar-brand {
-  margin-right: 0px;
-}
 
 div.navbar-nav {
   /* margin-left: 50px; */
   display: flex;
   justify-content: space-evenly;
-  width: 60%;
+  width: 100%;
 }
 
 .link-navbar {
