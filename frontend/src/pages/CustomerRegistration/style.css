@@ -1,36 +1,66 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+}
 .form-box{
-  border: 1px solid black;
-  height: 500px;
-  width: 500px;
-  margin: 0 auto;
-  margin-top: 75px;
-
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  margin: auto;
+  width: 700px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 0px 0px 15px 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 }
 
-.form-title{
-  display: block;
-  margin-bottom: 80px;
+.regform{
+  width: 700px;
+  margin: auto;
+  padding: 10px 0px 10px 0px;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  border-radius: 15px 15px 0px 0px;
+  margin-top: 40px;
 }
+
 
 label {
+  margin-left: 25px;
+  margin-top: 10px;
+  width: 135px;
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 700;
+  color: white;
+  text-align: center;
 }
 
-form {
-  margin-top: -5%;
+input {
+    border-radius: 6px;
+    outline: none;
+    padding: 5px;
+    border: none;
+}
+
+.form-style {
+  padding: 10px;
 }
 
 button{
-  background-color: #4CAF50; /* Green */
+  background-color: #4CAF50; 
   border: none;
+  border-radius: 6px;
+  outline: none;
   color: white;
-  padding: 4px 30px;
+  padding: 5px 30px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
 }

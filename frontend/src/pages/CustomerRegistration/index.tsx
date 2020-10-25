@@ -28,73 +28,72 @@ export default function CostomerRegistration() {
   return (
     <div>
       <NavBar />
+      <div className="regform"><h1>Cadastro de Paciente</h1></div>
         <div className="form-box">
-          <h1 className="form-title">Cadastro de Paciente</h1>
           <form onSubmit={handleSubmit(onSubmit)} className="form-style">
-            <label htmlFor="nome">Nome do paciente: </label>
-            <input name="nome" ref={register} />
+            
+            <section id="nome">
+              <label className="nome" htmlFor="nome">Nome: </label>
+              <input name="nome" ref={register} required/>
+              <label htmlFor="birth-date">Data de Nasc.: </label>
+              <input type="date" name="birth-date" ref={register} required />
+            </section>
 
             <br />
 
-            <label htmlFor="birth-date">Data de Nascimento: </label>
-            <input type="date" name="birth-date" ref={register} />
+              <section id="documentos">
+              <label htmlFor="rg">RG: </label>
+              <input type="text" name="rg" autoComplete="off" required />
+              <label htmlFor="cpf">CPF: </label>
+              <input type="text" name="cpf" autoComplete="off" required />
+            </section>
 
             <br />
 
-            <label htmlFor="rg">RG: </label>
-            <input type="text" name="rg" autoComplete="off" required />
-
-            <label htmlFor="cpf">CPF: </label>
-            <input type="text" name="cpf" autoComplete="off" required />
-
-            <br />
-
-            <label htmlFor="phone">Contato: </label>
-            <input type="phone" name="phone" autoComplete="off" required placeholder="(00) 99999-999" />
-
-            <br />
-
-            <label htmlFor="email">Email: </label>
-            <input type="email" name="email" autoComplete="off" required />
+            <section id="contato">
+              <label htmlFor="phone">Contato: </label>
+              <input type="phone" name="phone" autoComplete="off" required />
+              <label htmlFor="email">Email: </label>
+              <input type="email" name="email" autoComplete="off" required />
+            </section>
 
             <br/>
-            <label htmlFor="cep">CEP: </label>
-            <input name="cep" ref={register} />
+            <section id="endereco">
+              <label htmlFor="cep">CEP: </label>
+              <input name="cep" ref={register} required/>
+
+              <br />
+
+              <label htmlFor="rua">Rua: </label>
+              <input name="rua" ref={register} required/>
+
+              <label htmlFor="numero">Nº: </label>
+              <input name="numero" ref={register} required/>
+
+              <br />
+              <label htmlFor="bairro">Bairro: </label>
+              <input name="bairro" ref={register} />
+
+              <label htmlFor="complemento">Complemento: </label>
+              <input name="complemento" ref={register} />
+            </section>
 
             <br />
 
-            <label htmlFor="rua">Rua: </label>
-            <input name="rua" ref={register} />
+            <section id="responsaveis">
+              <label htmlFor="name-mot">Nome da Mãe: </label>
+              <input type="text" name="name-mot" autoComplete="off" />
+              <label htmlFor="name-fat">Nome da Pai: </label>
+              <input type="text" name="name-fat" autoComplete="off" />
+            </section>
+            
 
-            <label htmlFor="numero">Nº: </label>
-            <input name="numero" ref={register} />
-
-            <br />
-
-            <label htmlFor="bairro">Bairro: </label>
-            <input name="bairro" ref={register} />
-
-            <label htmlFor="complemento">Complemento: </label>
-            <input name="complemento" ref={register} />
-
-            <br />
-
-            <label htmlFor="name-mot">Nome da Mãe: </label>
-            <input type="text" name="name-mot" autoComplete="off" />
-
-            <br />
-
-            <label htmlFor="name-fat">Nome da Pai: </label>
-            <input type="text" name="name-fat" autoComplete="off" />
-
-            <br />
-
-            <label htmlFor="avatar">Escolha um imagem:</label>
+            <label htmlFor="avatar">Escolha uma imagem:</label>
             <input type="file" name="avatar" accept="image/x-png, image/jpeg" />
 
             <br />
 
-            <button type="submit">Enviar</button>
+            <div className="botao"><button type="submit">Enviar</button></div>
           </form>
         </div>
       <Footer />
