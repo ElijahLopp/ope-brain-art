@@ -1,0 +1,119 @@
+{
+    "Schedule": [
+        {
+            "Id": 1,
+            "Subject": "Andrew",
+            "StartTime": "2020-02-11T04:30:00.000Z",
+            "EndTime": "2020-02-11T06:00:00.000Z",
+            "CategoryColor": "#1aaa55",
+            "Description": "",
+            "Value": 0
+        },
+        {
+            "Id": 2,
+            "Subject": "Elias",
+            "StartTime": "2020-02-12T06:30:00.000Z",
+            "EndTime": "2020-02-12T08:30:00.000Z",
+            "CategoryColor": "#357cd2",
+            "Description": "",
+            "Value": 0
+        },
+        {
+            "Id": 3,
+            "Subject": "Leonardo",
+            "StartTime": "2020-02-13T04:30:00.000Z",
+            "EndTime": "2020-02-13T06:00:00.000Z",
+            "CategoryColor": "#7fa900",
+            "Description": "",
+            "Value": 0
+        },
+        {
+            "Id": 4,
+            "Subject": "Bran",
+            "StartTime": "2020-02-14T03:30:00.000Z",
+            "EndTime": "2020-02-14T04:30:00.000Z",
+            "CategoryColor": "#ea7a57",
+            "Description": "",
+            "Value": 0
+        },
+        {
+            "Id": 5,
+            "Subject": "Matheus",
+            "StartTime": "2020-02-15T04:30:00.000Z",
+            "EndTime": "2020-02-15T06:00:00.000Z",
+            "CategoryColor": "#00bdae",
+            "Description": "",
+            "Value": 0
+        },
+        {
+            "Id": 6,
+            "Subject": "Fernando",
+            "StartTime": "2020-02-16T06:30:00.000Z",
+            "EndTime": "2020-02-16T08:30:00.000Z",
+            "CategoryColor": "#f57f17",
+            "Description": "",
+            "Value": 0
+        },
+        {
+            "Id": 7,
+            "Subject": "Kamila",
+            "StartTime": "2020-02-17T04:30:00.000Z",
+            "EndTime": "2020-02-17T06:00:00.000Z",
+            "CategoryColor": "#1aaa55",
+            "Description": "",
+            "Value": 0
+        }
+    ],
+    "Patient": [
+        {
+            "Id": 1,
+            "Name": "Kamila"
+        },
+        {
+            "Id": 2,
+            "Name": "Fernando"
+        },
+        {
+            "Id": 3,
+            "Name": "Matheus"
+        },
+        {
+            "Id": 4,
+            "Name": "Bran"
+        },
+        {
+            "Id": 5,
+            "Name": "Leonardo"
+        },
+        {
+            "Id": 6,
+            "Name": "Elias"
+        },
+        {
+            "Id": 7,
+            "Name": "Andrew"
+        }
+    ],
+    "MReport": [
+        {
+            "Id": 8,
+            "PatientID": 1
+        },
+        {
+            "id": 3,
+            "PatientID": 1
+        },
+        {
+            "id": 4,
+            "PatientID": 1
+        },
+        {
+            "id": 5,
+            "PatientID": 1
+        },
+        {
+            "id": 6,
+            "PatientID": 1
+        }
+    ]
+}

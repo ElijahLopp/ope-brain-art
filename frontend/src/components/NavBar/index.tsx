@@ -15,7 +15,7 @@ function NavBar() {
           {/* <a className="navbar-brand" href="#">
             <img src={logoMain} alt="" />
           </a> */}
-          <Link to="/Landing" className="navbar-brand">
+          <Link to="/" className="navbar-brand">
             <img className="navbar-brand" src={logoMain} alt="" />
           </Link>
           <button
@@ -38,7 +38,7 @@ function NavBar() {
             >
               Backup <span className="sr-only">(current)</span>
             </a> */}
-              <Link to="/" className="nav-item nav-link active link-navbar">
+              <Link to="/MReport" className="nav-item nav-link active link-navbar">
                 Prontuário <span className="sr-only">(current)</span>
               </Link>
 
@@ -46,20 +46,12 @@ function NavBar() {
                 Agenda
               </a> */}
 
-              <Link
-                to="/"
-                className="nav-item nav-link active link-navbar"
-                href="#"
-              >
-                Agenda
-              </Link>
-
               {/* <a className="nav-item nav-link active link-navbar" href="#">
                 Finanças
               </a> */}
 
               <Link
-                to="/"
+                to="/Finance"
                 className="nav-item nav-link active link-navbar"
                 href="#"
               >
