@@ -1,7 +1,8 @@
 import './index.css';
 import * as React from 'react';
-import { ScheduleComponent, ViewsDirective, ViewDirective, Day, Week, WorkWeek, Month, Inject, Resize, DragAndDrop } from '@syncfusion/ej2-react-schedule';
+import { ScheduleComponent, ViewsDirective, ViewDirective, Day, Week, WorkWeek, Month, Inject, Resize, DragAndDrop, CellClickEventArgs } from '@syncfusion/ej2-react-schedule';
 import { applyCategoryColor } from '../../helper';
+import { DragAndDropEventArgs, TreeViewComponent } from '@syncfusion/ej2-react-navigations'
 
 import { extend } from '@syncfusion/ej2-base';
 import { SampleBase } from '../../sample-base';
@@ -17,48 +18,48 @@ import { GridComponent, ColumnsDirective, ColumnDirective } from '@syncfusion/ej
  * Schedule views sample
  */
 export class Views extends SampleBase {
-  constructor() {
-    super(...arguments);
-    this.data = extend([], dataSource.Schedule, null, true);
-    this.viewOptions = [
-      { text: 'Dia', value: 'Day' },
-      { text: 'Semana', value: 'Week' },
-      { text: 'Semana Útil', value: 'WorkWeek' },
-      { text: 'Mês', value: 'Month' }
-    ];
-    this.fields = { text: 'text', value: 'value' };
-  }
-  remoteData = new DataManager({
-    url: 'htpps.://js.suncfusion.com/demos/ejservices/api/Schedule/LoadData',
-    adaptor: new WebApiAdaptor(),
-    crossDomain: true
-  })
-  onViewChange(args) {
+  private scheduleObj!: ScheduleComponent;
+  private data: Object[] = extend([], (dataSource as any).Schedule, {}, true) as Object[];
+  private viewOptions: { [key: string]: Object }[] = [
+    { text: 'Day', value: 'Day' },
+    { text: 'Week', value: 'Week' },
+    { text: 'WorkWeek', value: 'WorkWeek' },
+    { text: 'Month', value: 'Month' }
+  ];
+  onViewChange(args: any) {
     this.scheduleObj.currentView = args.value;
     this.scheduleObj.dataBind();
   }
-  onEventRendered(args) {
+  onEventRendered(args: any) {
     applyCategoryColor(args, this.scheduleObj.currentView);
   }
 
-  actionComplete(args){
-    if (args.requestType == "eventChanged") {
-      
-    }
+  onTreeDragStop(args: any): void {
+    let cellData: CellClickEventArgs =  this.scheduleObj.getCellDetails(args.target);
+    if (cellData != null) {
+    let eventData:{[key: string]: object} = {
+    Subject: args.draggedNodeData.text,
+    StartTime: cellData.startTime,
+    EndTime: cellData.endTime,}
+    this.scheduleObj.addEvent(eventData);
   }
+  
+  }
+
+  public field: Object = {dataSource: dataSource.Patient, id:'Id', text:'Name'}
   render() {
     return (<div className='schedule-control-section'>
       <>
         <NavNar />
         <Footer />
       </>
-      <div className='col-lg-7 control-section'>
+      <div className='col-lg-9 control-section'>
         <div className='control-wrapper'>
-          <ScheduleComponent height='450px' ref={schedule => this.scheduleObj = schedule}
-          selectedDate={new Date(2020, 9, 25)}
-          eventSettings={{ dataSource: this.data }}
-          eventRendered={this.onEventRendered.bind(this)}
-          actionComplete={(data) => console.log(data)}>
+          <ScheduleComponent height='450px' ref={schedule => { if (schedule != null) {this.scheduleObj = schedule}}}
+            selectedDate={new Date(2020, 9, 25)}
+            eventSettings={{ dataSource: this.data }}
+            eventRendered={this.onEventRendered.bind(this)}
+            actionComplete={(data) => console.log(data)}>
             <ViewsDirective>
               <ViewDirective option='Day' />
               <ViewDirective option='Week' />
@@ -69,7 +70,12 @@ export class Views extends SampleBase {
           </ScheduleComponent>
         </div>
       </div>
-      <div className='col-lg-5 control-pane'>
+
+      <div className='treeview-title-container col-lg-3'> Lista de Pacientes</div>
+      <div className='treeview-component  col-lg-3'>
+        <TreeViewComponent fields={this.field} allowDragAndDrop={true} nodeDragStop={this.onTreeDragStop.bind(this)} />
+      </div>
+      {/* <div className='col-lg-5 control-pane'>
         <div className='control-section'>
           <GridComponent dataSource={dataSource.Schedule} height='405px'>
             <ColumnsDirective>
@@ -79,7 +85,7 @@ export class Views extends SampleBase {
             </ColumnsDirective>
           </GridComponent>
         </div>
-      </div>
+      </div> */}
 
     </div>
     );
