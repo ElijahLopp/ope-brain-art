@@ -1,22 +1,22 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useToasts } from "react-toast-notifications";
-import api from "../../services/api";
-import "./styles.css";
+import React from 'react';
+import {useForm} from 'react-hook-form';
+import {useToasts} from 'react-toast-notifications';
+import api from '../../../services/api';
+import './styles.css';
 
 export default function CostomerRegistration() {
-  const { addToast } = useToasts();
-  const { register, handleSubmit } = useForm();
+  const {addToast} = useToasts();
+  const {register, handleSubmit} = useForm();
   const onSubmit = async (data: any) => {
     try {
-      await api.post("patients", data);
-      addToast("Paciente cadastrado com sucesso", {
-        appearance: "success",
+      await api.post('patients', data);
+      addToast('Paciente cadastrado com sucesso', {
+        appearance: 'success',
         autoDismiss: true,
       });
     } catch (err) {
-      addToast("Erro ao cadastrar paciente", {
-        appearance: "error",
+      addToast('Erro ao cadastrar paciente', {
+        appearance: 'error',
         autoDismiss: true,
       });
     }

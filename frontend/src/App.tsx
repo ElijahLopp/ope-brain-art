@@ -1,14 +1,24 @@
-import React from "react";
-import { ToastProvider } from "react-toast-notifications";
-import "./assets/styles/global.css";
-import Routes from "./routes";
+import React from 'react';
+import {BrowserRouter} from 'react-router-dom';
+import {ToastProvider} from 'react-toast-notifications';
+import AppProvider from '~/hooks';
+import {ThemeSwitchProvider} from '~/hooks/theme-switch';
+import Routes from '~/routes';
+import GlobalStyle from '~/styles/global';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <ToastProvider>
-      <Routes />
-    </ToastProvider>
+    <ThemeSwitchProvider>
+      <BrowserRouter>
+        <ToastProvider>
+          <AppProvider>
+            <Routes />
+          </AppProvider>
+        </ToastProvider>
+      </BrowserRouter>
+      <GlobalStyle />
+    </ThemeSwitchProvider>
   );
-}
+};
 
 export default App;
