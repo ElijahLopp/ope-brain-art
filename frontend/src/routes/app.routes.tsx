@@ -11,11 +11,7 @@ const AppRoutes: React.FC = () => {
     <FlowTemplate>
       <Route path={ROUTER_NAME.HOME} exact component={Home} />
       <Route path={ROUTER_NAME.FINANCE} exact component={Finance} />
-      <Route
-        path={ROUTER_NAME.MEDICAL_RECORD}
-        exact
-        component={MedicalRecord}
-      />
+      <Route path={ROUTER_NAME.MEDICAL_RECORD} component={MedicalRecord} />
     </FlowTemplate>
   );
 };

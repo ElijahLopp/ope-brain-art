@@ -19,7 +19,7 @@ const AuthProvider: React.FC = ({children}) => {
       return {
         token,
         user,
-        profile: user.profileIds[0],
+        profile: user.profile,
       };
     }
     return {} as AuthState;
@@ -31,21 +31,31 @@ const AuthProvider: React.FC = ({children}) => {
   }, []);
 
   const signIn = useCallback(
-    async ({login, password}) => {
+    async ({email, password, remember}) => {
       setLoading(true);
+      console.log(email);
       try {
-        const response = await api.post('auth/login', {login, password});
+        // const response = await api.post('auth/login', {login, password});
 
-        const {token, user} = response.data;
+        // const {token, user} = response.data;
 
-        if (!hasPermission(user.profileIds[0])) {
-          addToast('Login sem permissão de acesso!', {
-            appearance: 'error',
-            autoDismiss: true,
-          });
-          return false;
-        }
+        // if (!hasPermission(user.profileIds[0])) {
+        //   addToast('Login sem permissão de acesso!', {
+        //     appearance: 'error',
+        //     autoDismiss: true,
+        //   });
+        //   return false;
+        // }
 
+        const token = 'sdjiosd09owe0994okpoopd90swe';
+        const user = {
+          id: 1,
+          name: 'teste',
+          avatar: '',
+          email,
+          cpf: '22222222202',
+          profile: 1,
+        };
         localStorage.setItem(`${pathLocalStorage}:token`, token);
         localStorage.setItem(`${pathLocalStorage}:user`, JSON.stringify(user));
 
@@ -68,7 +78,7 @@ const AuthProvider: React.FC = ({children}) => {
         setLoading(false);
       }
     },
-    [addToast, hasPermission],
+    [addToast],
   );
 
   const onForgotPassword = useCallback(async (login) => {

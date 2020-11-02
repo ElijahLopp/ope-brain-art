@@ -1,25 +1,10 @@
 export interface UserState {
-  address: string;
   avatar: string;
-  city: string;
   cpf: string;
   email: string;
-  firstAccess: boolean;
-  isAdmin: boolean;
   id: number;
-  isDeleted: boolean;
-  login: string;
-  loginAttempts: number;
-  managerId: number | null;
   name: string;
-  number: number;
-  password: string;
-  passwordHash: string;
-  phoneAreaCode: string;
-  phoneNumber: string;
-  profileIds: number[];
-  state: string;
-  zipcode: string;
+  profile: number;
 }
 export interface AuthState {
   token: string;
@@ -28,8 +13,9 @@ export interface AuthState {
 }
 
 export interface SignInCredentials {
-  login: string;
+  email: string;
   password: string;
+  remember: boolean;
 }
 
 export interface AuthContextData {

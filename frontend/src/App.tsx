@@ -2,13 +2,13 @@ import React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import {ToastProvider} from 'react-toast-notifications';
 import AppProvider from '~/hooks';
-import {ThemeSwitchProvider} from '~/hooks/theme-switch';
+import {ThemeProvider} from '~/hooks/theme';
 import Routes from '~/routes';
 import GlobalStyle from '~/styles/global';
 
 const App: React.FC = () => {
   return (
-    <ThemeSwitchProvider>
+    <ThemeProvider>
       <BrowserRouter>
         <ToastProvider>
           <AppProvider>
@@ -17,7 +17,7 @@ const App: React.FC = () => {
         </ToastProvider>
       </BrowserRouter>
       <GlobalStyle />
-    </ThemeSwitchProvider>
+    </ThemeProvider>
   );
 };
 

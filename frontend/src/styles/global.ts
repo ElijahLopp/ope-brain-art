@@ -7,18 +7,21 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     outline: 0;
     scrollbar-width: thin;
+    outline: none;
+  }
+
+  button:focus {
+    outline: 0;
   }
 
   body {
-    background: ${(props) => props.theme.colors.background};
-    color: ${(props) => props.theme.colors.fontColor};
+
     -webkit-font-smoothing: antialiased;
     scrollbar-color: #e2e8f0 #F5F5F5;
   }
 
   body, input, button{
-    font-family: ${(props) => props.theme.fontFamily};
-    font-size: ${(props) => props.theme.typography.regular.size};
+
   }
 
   h1, h2, h3, h4, h5, h5, strong{
@@ -33,6 +36,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     border: 0;
     padding: 0;
+    outline: none;
     display: inline-block;
     vertical-align: middle;
     white-space: normal;
@@ -41,10 +45,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::placeholder {
-    font-size: ${(props) => props.theme.typography.regular.size};
     font-weight: 500;
     line-height: 1.33;
-    color: ${(props) => props.theme.colors.textGray};
   }
 
   input:-webkit-autofill,
@@ -57,6 +59,7 @@ const GlobalStyle = createGlobalStyle`
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
     transition: background-color 5000s ease-in-out 0s;
+    outline: none;
   }
 
   input[type=number] {
