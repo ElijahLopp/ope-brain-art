@@ -3,14 +3,14 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Tooltip from '@material-ui/core/Tooltip';
 import CreateNewFolderOutlinedIcon from '@material-ui/icons/CreateNewFolderOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import SessionList from '~/components/molecules/SessionList';
 import {SessionData} from '~/hooks/patient/interfaces';
 import usePatientContext from '~/hooks/patient/usePatientContext';
 import SessionManage from '../SessionManage';
 import * as S from './styles';
 
-const MedicalRecordRight: React.FC = () => {
+const MedicalRecordRight: React.FC<any> = ({openManagePatient}) => {
   const {
     patientSelected,
     loadingSessions,
@@ -39,6 +39,14 @@ const MedicalRecordRight: React.FC = () => {
     selectSession(null);
   };
 
+  const handleOpenManagePatient = useCallback(() => {
+    openManagePatient(patientSelected);
+  }, [openManagePatient, patientSelected]);
+
+  const handleViewSession = (session: SessionData) => {
+    selectSession(session);
+  };
+
   if (!patientSelected) {
     return (
       <S.Container>
@@ -52,10 +60,6 @@ const MedicalRecordRight: React.FC = () => {
       </S.Container>
     );
   }
-
-  const handleViewSession = (session: SessionData) => {
-    selectSession(session);
-  };
   const handleNewSession = () => {
     const newSession: SessionData = {
       date: new Date().toISOString(),
@@ -64,7 +68,6 @@ const MedicalRecordRight: React.FC = () => {
     };
     selectSession(newSession);
   };
-
   return (
     <>
       {!sessionSelected ? (
@@ -81,7 +84,10 @@ const MedicalRecordRight: React.FC = () => {
               </S.IconButton>
             </Tooltip>
             <Tooltip title="Editar Paciente" aria-label="Editar Paciente">
-              <S.IconButton type="button" aria-label="novo paciente">
+              <S.IconButton
+                type="button"
+                aria-label="editar paciente"
+                onClick={handleOpenManagePatient}>
                 <EditOutlinedIcon fontSize="small" />
               </S.IconButton>
             </Tooltip>

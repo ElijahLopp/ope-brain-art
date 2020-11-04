@@ -49,6 +49,8 @@ module.exports = {
       'error',
       {props: true, ignorePropertyModificationsFor: ['draft']},
     ],
+    'jsx-a11y/label-has-associated-control': 0,
+    'jsx-a11y/label-has-for': 0,
     '@typescript-eslint/no-explicit-any': 'off',
     'react/prop-types': 'off',
     'import/prefer-default-export': 'off',
