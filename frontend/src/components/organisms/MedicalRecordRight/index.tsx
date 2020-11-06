@@ -1,13 +1,15 @@
+import Button from '@material-ui/core/Button';
 import TablePagination from '@material-ui/core/TablePagination';
 import Tooltip from '@material-ui/core/Tooltip';
 import CreateNewFolderOutlinedIcon from '@material-ui/icons/CreateNewFolderOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Loading from '~/components/atoms/Loading';
 import SessionList from '~/components/molecules/SessionList';
 import {uriAvatar} from '~/helpers/patient';
 import {SessionData} from '~/hooks/patient/interfaces';
 import usePatientContext from '~/hooks/patient/usePatientContext';
+import useSessionContext from '~/hooks/session/useSessionContext';
 import SessionManage from '../SessionManage';
 import {MedicalRecordRightProps} from './interfaces';
 import * as S from './styles';
@@ -15,41 +17,54 @@ import * as S from './styles';
 const MedicalRecordRight: React.FC<MedicalRecordRightProps> = ({
   openManagePatient,
 }) => {
+  const {patientSelected} = usePatientContext();
   const {
-    patientSelected,
-    loadingSessions,
-    sessionsAll,
-    selectSession,
+    saveSession,
+    loading,
     sessionSelected,
-  } = usePatientContext();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+    selectSession,
+    createSession,
+    sessionsAll,
+    page,
+    perPage,
+    changePerPage,
+    changePage,
+    getSessions,
+  } = useSessionContext();
 
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
-  ) => {
-    setPage(newPage);
-  };
+  const handleChangePage = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+      patientSelected?.id && changePage(newPage, patientSelected.id);
+    },
+    [changePage, patientSelected],
+  );
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const handleChangeRowsPerPage = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      patientSelected?.id &&
+        changePerPage(parseInt(event.target.value, 10), patientSelected.id);
+    },
+    [changePerPage, patientSelected],
+  );
 
-  const handleSessionGoBackClick = () => {
+  const handleSessionGoBackClick = useCallback(() => {
     selectSession(null);
-  };
+  }, [selectSession]);
 
   const handleOpenManagePatient = useCallback(() => {
     openManagePatient(patientSelected);
   }, [openManagePatient, patientSelected]);
 
-  const handleViewSession = (session: SessionData) => {
-    selectSession(session);
-  };
+  const handleViewSession = useCallback(
+    (session: SessionData) => {
+      selectSession(session);
+    },
+    [selectSession],
+  );
+
+  useEffect(() => {
+    patientSelected?.id && getSessions(patientSelected.id);
+  }, [patientSelected, getSessions]);
 
   if (!patientSelected) {
     return (
@@ -64,13 +79,11 @@ const MedicalRecordRight: React.FC<MedicalRecordRightProps> = ({
       </S.Container>
     );
   }
+
   const handleNewSession = () => {
-    const newSession: SessionData = {
-      date: new Date().toISOString(),
-      body: '',
-      patientId: patientSelected?.id,
-    };
-    selectSession(newSession);
+    if (patientSelected?.id) {
+      createSession(patientSelected.id);
+    }
   };
   return (
     <>
@@ -97,18 +110,33 @@ const MedicalRecordRight: React.FC<MedicalRecordRightProps> = ({
             </Tooltip>
           </S.Header>
           <S.Content>
-            <Loading active={loadingSessions} />
-            <SessionList
-              data={sessionsAll.results}
-              onClick={handleViewSession}
-            />
+            <Loading active={loading} />
+            {loading || sessionsAll.results.length > 0 ? (
+              <SessionList
+                data={sessionsAll.results}
+                onClick={handleViewSession}
+              />
+            ) : (
+              <S.NotSessionContainer>
+                <S.NotSessionText>
+                  Ainda não tem nenhuma sessão
+                </S.NotSessionText>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleNewSession}>
+                  Criar a primeira sessão
+                </Button>
+              </S.NotSessionContainer>
+            )}
+
             <S.PaginationContainer>
               <TablePagination
                 component="div"
                 count={sessionsAll.count}
                 page={page}
                 onChangePage={handleChangePage}
-                rowsPerPage={rowsPerPage}
+                rowsPerPage={perPage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
               />
             </S.PaginationContainer>
@@ -118,7 +146,9 @@ const MedicalRecordRight: React.FC<MedicalRecordRightProps> = ({
         <SessionManage
           data={sessionSelected}
           patient={patientSelected}
+          loading={loading}
           goBackClick={handleSessionGoBackClick}
+          onSave={saveSession}
         />
       )}
     </>

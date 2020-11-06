@@ -1,10 +1,13 @@
 import React from 'react';
 import {AuthProvider} from './auth';
 import PatientProvider from './patient/PatientProvider';
+import SessionProvider from './session/SessionProvider';
 
 const AppProvider: React.FC = ({children}) => (
   <AuthProvider>
-    <PatientProvider>{children}</PatientProvider>
+    <PatientProvider>
+      <SessionProvider>{children}</SessionProvider>
+    </PatientProvider>
   </AuthProvider>
 );
 

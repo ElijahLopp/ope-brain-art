@@ -13,7 +13,21 @@ export const ContainerEdit = styled.div`
   display: flex;
   flex-direction: column;
 `;
+export const NotSessionContainer = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
 
+export const NotSessionText = styled(Typography).attrs({
+  component: 'h6',
+  variant: 'subtitle1',
+})`
+  text-transform: uppercase;
+  color: ${(props) => props.theme.palette.grey[500]};
+`;
 export const Header = styled.div`
   padding: 8px 14px;
   height: 60px;

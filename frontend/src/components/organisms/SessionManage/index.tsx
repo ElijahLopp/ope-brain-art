@@ -7,21 +7,24 @@ import {format} from 'date-fns';
 import {ContentState, convertToRaw, EditorState} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Editor} from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Loading from '~/components/atoms/Loading';
 import {SessionManageProps} from './interfaces';
 import * as S from './styles';
 
 const SessionManage: React.FC<SessionManageProps> = ({
   goBackClick,
+  onSave,
   patient,
   data,
+  loading,
 }) => {
   const editorRef: any = useRef();
 
   const [editorState, setEditorState] = useState(() => {
-    if (!data.id) {
+    if (data?.isNew) {
       return EditorState.createEmpty();
     }
     const contentBlock = htmlToDraft(data.body);
@@ -30,22 +33,27 @@ const SessionManage: React.FC<SessionManageProps> = ({
     );
     return EditorState.createWithContent(contentState);
   });
-  const [editable, setEditable] = useState(!data.id);
+  const [editable, setEditable] = useState(data?.isNew);
 
   const handleEditorChange = (content: any) => setEditorState(content);
-  const handleEnableEditor = () => {
+  const handleEnableEditor = useCallback(() => {
     setEditable(!editable);
-  };
-  const handleSave = () => {
+  }, [editable]);
+
+  const handleSave = async () => {
+    const body = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    if (data?.id) {
+      await onSave(data.id, body);
+    }
+
     setEditable(false);
-    console.log(draftToHtml(convertToRaw(editorState.getCurrentContent())));
   };
 
   useEffect(() => {
-    if (!data.id && editorRef.current) {
+    if (editable && editorRef.current) {
       editorRef.current.focus();
     }
-  }, [data.id]);
+  }, [editable]);
 
   const setEditorReference = (ref: any) => {
     editorRef.current = ref;
@@ -53,6 +61,7 @@ const SessionManage: React.FC<SessionManageProps> = ({
 
   return (
     <S.Container>
+      <Loading active={loading} />
       <S.Header>
         <Tooltip title="Voltar" aria-label="Voltar">
           <S.IconButton type="button" aria-label="Voltar" onClick={goBackClick}>
@@ -60,7 +69,7 @@ const SessionManage: React.FC<SessionManageProps> = ({
           </S.IconButton>
         </Tooltip>
         <S.Title>{`${patient.nome.split(' ')[0]} - Sessão ${format(
-          new Date(data.date),
+          new Date(data.createdAt),
           'dd/MM/yyyy hh:mm',
         )}`}</S.Title>
         {!editable ? (

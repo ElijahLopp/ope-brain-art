@@ -2,7 +2,7 @@ import React, {createContext, useCallback, useContext, useState} from 'react';
 import {useToasts} from 'react-toast-notifications';
 import {getNamePathLocalStorageApp} from '~/config';
 import api from '~/services/api';
-import {AuthContextData, AuthState, ProfilesEnum} from './auth.interfaces';
+import {AuthContextData, AuthState} from './auth.interfaces';
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 const pathLocalStorage = getNamePathLocalStorageApp();
@@ -25,10 +25,6 @@ const AuthProvider: React.FC = ({children}) => {
     return {} as AuthState;
   });
   const [loading, setLoading] = useState(false);
-
-  const hasPermission = useCallback((profile: number) => {
-    return [ProfilesEnum.user, ProfilesEnum.admin].includes(profile);
-  }, []);
 
   const signIn = useCallback(
     async ({email, password, remember}) => {

@@ -7,6 +7,7 @@ export const Container = styled.div`
   flex: 5;
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
 
 export const Header = styled.div`
@@ -23,6 +24,7 @@ export const Avatar = styled.div`
   background: #454;
 `;
 export const ContainerRecord = styled.div`
+  position: relative;
   overflow-y: scroll;
   height: calc(100vh - 125px);
   padding: 20px;

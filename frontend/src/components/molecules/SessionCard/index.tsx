@@ -13,7 +13,7 @@ const SessionCard: React.FC<SessionCardProps> = ({data, onClick}) => {
     <S.Container>
       <S.IconFolder />
       <S.Title>{`Sessão ${format(
-        new Date(data.date),
+        new Date(data.createdAt),
         'dd/MM/yyyy hh:mm',
       )}`}</S.Title>
       <Tooltip title="Ver Sessão" aria-label="Ver Sessão">

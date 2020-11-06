@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  flex: 1;
+  height: calc(100vh - 177px);
+  overflow-y: scroll;
 `;

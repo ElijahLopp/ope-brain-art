@@ -5,6 +5,7 @@ import { ConfigEnum } from '../../config/config.enum';
 import { ConfigService } from '../../config/config.service';
 import { DatabaseModule } from '../../database/database.module';
 import { PatientModule } from '../patient/patient.module';
+import { SessionModule } from '../session/session.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -12,6 +13,7 @@ import { AppService } from './app.service';
   imports: [
     PatientModule,
     SharedModule,
+    SessionModule,
     DatabaseModule.orm(),
     MulterModule.register({
       dest: './avatars',

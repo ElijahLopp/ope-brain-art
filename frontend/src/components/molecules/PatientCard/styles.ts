@@ -1,8 +1,8 @@
 import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import Avatar from '~/components/atoms/Avatar';
 
-export const Container = styled.div`
+export const Container = styled.div<{isSelected: boolean}>`
   display: flex;
   width: 100%;
   background: #fff;
@@ -16,6 +16,11 @@ export const Container = styled.div`
   :hover {
     background: #e6e6e6;
   }
+  ${(props) =>
+    props.isSelected &&
+    css`
+      border-left: 5px solid ${props.theme.palette.primary.main};
+    `}
 `;
 export const AvatarContainer = styled(Avatar)`
   width: 60px;

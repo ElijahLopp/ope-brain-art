@@ -6,11 +6,12 @@ export interface AttachmentsData {
   date: string;
 }
 export interface SessionData {
-  id?: string | number;
-  date: string;
+  id?: number;
+  createdAt: string;
   body: string;
-  patientId?: string | number;
   attachments?: AttachmentsData[];
+
+  isNew?: boolean;
 }
 
 export interface PatientData {
@@ -42,20 +43,16 @@ export interface PatientResponseData {
 
 export interface PatientContextData {
   loading: boolean;
-  loadingSessions: boolean;
   loadingManage: boolean;
   perPage: number;
   page: number;
   patientAll: PatientResponseData;
-  sessionsAll: SessionsResponseData;
   patientSelected: PatientData | null;
-  sessionSelected: SessionData | null;
   getAll: () => Promise<PatientResponseData>;
   getPatientOne: (id: string) => Promise<PatientData>;
   createPatient: (data: PatientData) => Promise<void>;
   updatePatient: (id: number, data: PatientData) => Promise<void>;
   selectPatient: (patient: PatientData) => void;
-  selectSession: (session: SessionData | null) => void;
   changePage: (newPage: number) => void;
   changePerPage: (newPerPage: number) => void;
   onSearch: (text: string) => void;

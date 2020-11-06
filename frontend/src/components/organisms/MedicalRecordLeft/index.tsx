@@ -7,6 +7,7 @@ import Loading from '~/components/atoms/Loading';
 import PatientCard from '~/components/molecules/PatientCard';
 import {PatientData} from '~/hooks/patient/interfaces';
 import usePatientContext from '~/hooks/patient/usePatientContext';
+import useSessionContext from '~/hooks/session/useSessionContext';
 import {MedicalRecordLeftProps} from './interfaces';
 import * as S from './styles';
 
@@ -22,8 +23,9 @@ const MedicalRecordLeft: React.FC<MedicalRecordLeftProps> = ({
     changePage,
     changePerPage,
     onSearch,
+    patientSelected,
   } = usePatientContext();
-
+  const {getAllSessionByPatient} = useSessionContext();
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number,
@@ -39,8 +41,9 @@ const MedicalRecordLeft: React.FC<MedicalRecordLeftProps> = ({
   const handleSelectedPatient = useCallback(
     (patient: PatientData) => {
       selectPatient(patient);
+      patient?.id && getAllSessionByPatient(patient.id);
     },
-    [selectPatient],
+    [selectPatient, getAllSessionByPatient],
   );
   const handleOpenManagePatient = useCallback(() => {
     openManagePatient({} as PatientData);
@@ -70,6 +73,7 @@ const MedicalRecordLeft: React.FC<MedicalRecordLeftProps> = ({
                 key={item.id}
                 data={item}
                 onClick={handleSelectedPatient}
+                isSelected={patientSelected?.id === item.id}
               />
             );
           })}
