@@ -1,6 +1,5 @@
 import DividerMUI from '@material-ui/core/Divider';
 import IconButtonMUI from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -11,6 +10,13 @@ export const Container = styled.div`
   border-right: 1px solid #ccc;
 `;
 
+export const Content = styled.div`
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
 export const Header = styled.div`
   padding: 8px 4px;
   height: 60px;
@@ -19,10 +25,6 @@ export const Header = styled.div`
   border-bottom: 1px solid #ccc;
 `;
 
-export const InputSearch = styled(InputBase)`
-  margin-left: 4px;
-  flex: 1;
-`;
 export const Divider = styled(DividerMUI)`
   height: 28px;
   margin: 4px;
@@ -30,7 +32,8 @@ export const Divider = styled(DividerMUI)`
 export const IconButton = styled(IconButtonMUI)``;
 
 export const ListaPatient = styled.div`
-  flex: 1;
+  height: calc(100vh - 177px);
+  overflow-y: scroll;
 `;
 export const PaginationContainer = styled.div`
   border-top: 1px solid #ccc;

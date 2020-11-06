@@ -1,6 +1,7 @@
 import IconButtonMUI from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
+import Avatar from '~/components/atoms/Avatar';
 
 export const Container = styled.div`
   flex: 5;
@@ -21,10 +22,9 @@ export const Header = styled.div`
   border-bottom: 1px solid #ccc;
 `;
 
-export const Avatar = styled.div`
-  width: 50px;
-  height: 50px;
-  background: #454;
+export const AvatarContainer = styled(Avatar)`
+  width: 40px;
+  height: 40px;
 `;
 
 export const Title = styled(Typography).attrs({

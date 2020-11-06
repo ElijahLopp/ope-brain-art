@@ -9,10 +9,15 @@ import {
   useTheme,
 } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import {KeyboardDatePicker} from '@material-ui/pickers';
 import React, {useCallback, useEffect} from 'react';
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import SwipeableViews from 'react-swipeable-views';
 import Avatar from '~/components/atoms/Avatar';
+import Loading from '~/components/atoms/Loading';
+import {uriAvatar} from '~/helpers/patient';
+import {PatientData} from '~/hooks/patient/interfaces';
+import usePatientContext from '~/hooks/patient/usePatientContext';
 import {ManagePatientProps} from './interfaces';
 import * as S from './styles';
 
@@ -47,20 +52,22 @@ function a11yProps(index: any) {
 }
 
 const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
-  const [avatarPreview, setAvatarPreview] = React.useState();
+  const [avatarPreview, setAvatarPreview] = React.useState(
+    uriAvatar(open?.avatar || null),
+  );
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [selectedTab, setSelectedTab] = React.useState(0);
   const isEdit = !!(typeof open === 'object' && open?.id);
-  const {register, handleSubmit, reset} = useForm();
 
+  const {register, handleSubmit, reset, control} = useForm();
+  const {createPatient, updatePatient, loadingManage} = usePatientContext();
   useEffect(() => {
     if (isEdit) {
-      console.log('aquii', open);
       const result: any = open;
       reset(result);
     } else {
-      reset({});
+      reset({dataNascimento: null} as any);
     }
   }, [isEdit, reset, open]);
 
@@ -74,37 +81,40 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
 
   const handleClose = () => {
     onClose();
-    setAvatarPreview(undefined);
-    reset({});
+    setAvatarPreview(null);
+    reset({dataNascimento: null} as any);
   };
 
   const handleChangePreview = useCallback((file) => {
     setAvatarPreview(file);
   }, []);
 
-  const onSubmit = (data: any) => {
-    const formData = new FormData();
-    Object.keys(data).forEach((key) => {
-      if (key === 'file') {
-        formData.append('avatar', data.file.length >= 1 ? data.file[0] : null);
+  const onSubmit = async (data: PatientData) => {
+    try {
+      if (isEdit) {
+        open?.id && (await updatePatient(open.id, data));
       } else {
-        formData.append(key, data[key]);
+        await createPatient(data);
       }
-    });
+    } catch (error) {
+      console.log(error.response);
+    }
   };
-
   return (
     <div>
       <S.DialogContainer
         fullWidth={fullScreen}
         open={!!open}
         aria-labelledby="form-dialog-title">
+        <Loading active={loadingManage} />
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <S.DialogTitle id="form-dialog-title">
             <S.Title>{isEdit ? 'Editar Paciente' : 'Novo Paciente'}</S.Title>
             <S.AvatarContainer>
               <S.AvatarGroup>
-                <Avatar uri={avatarPreview} />
+                <Avatar
+                  uri={avatarPreview || uriAvatar(open?.avatar || null)}
+                />
                 <S.ButtonUpload
                   register={register}
                   onChange={handleChangePreview}
@@ -132,7 +142,7 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
                 <TextField
                   autoFocus
                   inputRef={register}
-                  name="name"
+                  name="nome"
                   margin="dense"
                   label="Nome do paciente"
                   type="text"
@@ -163,7 +173,54 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
                   fullWidth
                 />
                 <TextField
-                  name="nome_mae"
+                  name="telefone"
+                  inputRef={register}
+                  margin="dense"
+                  label="Telefone"
+                  type="text"
+                  fullWidth
+                />
+                <TextField
+                  name="celular"
+                  inputRef={register}
+                  margin="dense"
+                  label="Celular"
+                  type="text"
+                  fullWidth
+                />
+                {/* <TextField
+                  id="date"
+                  name="dataNascimento"
+                  inputRef={register}
+                  label="Data de Nascimento"
+                  placeholder=""
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                /> */}
+
+                <Controller
+                  control={control}
+                  name="dataNascimento"
+                  render={({onChange, value, name}) => (
+                    <KeyboardDatePicker
+                      disableToolbar
+                      fullWidth
+                      autoOk
+                      variant="inline"
+                      format="dd/MM/yyyy"
+                      label="Data de Nascimento"
+                      invalidDateMessage="Formato da data é invalida"
+                      value={value}
+                      onChange={onChange}
+                    />
+                  )}
+                />
+
+                <TextField
+                  name="nomeMae"
                   inputRef={register}
                   margin="dense"
                   label="Nome do Mãe"
@@ -171,7 +228,7 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
                   fullWidth
                 />
                 <TextField
-                  name="nome_pai"
+                  name="nomePai"
                   inputRef={register}
                   margin="dense"
                   label="Nome do Pai"

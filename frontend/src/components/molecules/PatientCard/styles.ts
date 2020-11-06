@@ -1,5 +1,6 @@
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
+import Avatar from '~/components/atoms/Avatar';
 
 export const Container = styled.div`
   display: flex;
@@ -16,10 +17,9 @@ export const Container = styled.div`
     background: #e6e6e6;
   }
 `;
-export const Avatar = styled.div`
+export const AvatarContainer = styled(Avatar)`
   width: 60px;
   height: 60px;
-  background: #454;
 `;
 export const Content = styled.div`
   flex: 1;

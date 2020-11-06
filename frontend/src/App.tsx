@@ -5,12 +5,14 @@ import AppProvider from '~/hooks';
 import {ThemeProvider} from '~/hooks/theme';
 import Routes from '~/routes';
 import GlobalStyle from '~/styles/global';
+import ToastCustom from './components/molecules/ToastCustom';
+import {ToastContainer} from './components/molecules/ToastCustom/styles';
 
 const App: React.FC = () => {
   return (
     <ThemeProvider>
       <BrowserRouter>
-        <ToastProvider>
+        <ToastProvider components={{Toast: ToastCustom, ToastContainer}}>
           <AppProvider>
             <Routes />
           </AppProvider>

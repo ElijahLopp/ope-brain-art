@@ -59,7 +59,7 @@ const SessionManage: React.FC<SessionManageProps> = ({
             <ArrowBackIosOutlinedIcon fontSize="small" />
           </S.IconButton>
         </Tooltip>
-        <S.Title>{`${patient.name.split(' ')[0]} - Sessão ${format(
+        <S.Title>{`${patient.nome.split(' ')[0]} - Sessão ${format(
           new Date(data.date),
           'dd/MM/yyyy hh:mm',
         )}`}</S.Title>

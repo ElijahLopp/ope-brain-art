@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@date-io/date-fns": "1.x",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/pickers": "^3.2.10",
     "@syncfusion/ej2": "18.3.40",
     "@syncfusion/ej2-base": "^18.3.35",
     "@syncfusion/ej2-buttons": "^18.3.35",

@@ -1,16 +1,20 @@
-import {CircularProgress} from '@material-ui/core';
 import TablePagination from '@material-ui/core/TablePagination';
 import Tooltip from '@material-ui/core/Tooltip';
 import CreateNewFolderOutlinedIcon from '@material-ui/icons/CreateNewFolderOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import React, {useCallback, useState} from 'react';
+import Loading from '~/components/atoms/Loading';
 import SessionList from '~/components/molecules/SessionList';
+import {uriAvatar} from '~/helpers/patient';
 import {SessionData} from '~/hooks/patient/interfaces';
 import usePatientContext from '~/hooks/patient/usePatientContext';
 import SessionManage from '../SessionManage';
+import {MedicalRecordRightProps} from './interfaces';
 import * as S from './styles';
 
-const MedicalRecordRight: React.FC<any> = ({openManagePatient}) => {
+const MedicalRecordRight: React.FC<MedicalRecordRightProps> = ({
+  openManagePatient,
+}) => {
   const {
     patientSelected,
     loadingSessions,
@@ -64,7 +68,7 @@ const MedicalRecordRight: React.FC<any> = ({openManagePatient}) => {
     const newSession: SessionData = {
       date: new Date().toISOString(),
       body: '',
-      patientId: patientSelected.id,
+      patientId: patientSelected?.id,
     };
     selectSession(newSession);
   };
@@ -73,8 +77,8 @@ const MedicalRecordRight: React.FC<any> = ({openManagePatient}) => {
       {!sessionSelected ? (
         <S.Container>
           <S.Header>
-            <S.Avatar />
-            <S.Title>{patientSelected.name}</S.Title>
+            <S.AvatarContainer uri={uriAvatar(patientSelected.avatar)} />
+            <S.Title>{patientSelected.nome}</S.Title>
             <Tooltip title="Nova Sessão" aria-label="Nova Sessão">
               <S.IconButton
                 type="button"
@@ -93,11 +97,7 @@ const MedicalRecordRight: React.FC<any> = ({openManagePatient}) => {
             </Tooltip>
           </S.Header>
           <S.Content>
-            {loadingSessions && (
-              <S.LoadingContainer>
-                <CircularProgress />
-              </S.LoadingContainer>
-            )}
+            <Loading active={loadingSessions} />
             <SessionList
               data={sessionsAll.results}
               onClick={handleViewSession}

@@ -8,15 +8,16 @@ import * as S from './styles';
 
 const MedicalRecord: React.FC = () => {
   const {getAll} = usePatientContext();
-  const [openManagePatient, setOpenManagePatient] = React.useState<
-    null | PatientData | 'new'
-  >(null);
+  const [
+    openManagePatient,
+    setOpenManagePatient,
+  ] = React.useState<null | PatientData>(null);
 
   useEffect(() => {
     getAll();
   }, [getAll]);
 
-  const handleClickOpen = (data: null | PatientData | 'new') => {
+  const handleClickOpen = (data: null | PatientData) => {
     setOpenManagePatient(data);
   };
 

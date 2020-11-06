@@ -1,6 +1,8 @@
 import React, {useCallback, useState} from 'react';
 import {useToasts} from 'react-toast-notifications';
 import {useImmer} from 'use-immer';
+import {converteDataToFromData} from '~/helpers/patient';
+import api from '~/services/api';
 import {
   PatientData,
   PatientResponseData,
@@ -8,28 +10,6 @@ import {
   SessionsResponseData,
 } from './interfaces';
 import PatientContext from './PatientContext';
-
-const fake: PatientResponseData = {
-  count: 2,
-  results: [
-    {
-      id: 1,
-      name: 'Andrew Vazzoler',
-    },
-    {
-      id: 2,
-      name: 'Elias Lopes',
-    },
-    {
-      id: 3,
-      name: 'Brando',
-    },
-    {
-      id: 4,
-      name: 'Matheus',
-    },
-  ],
-};
 
 const Sessions = {
   count: 4,
@@ -63,6 +43,7 @@ const Sessions = {
 const PatientProvider: React.FC = ({children}) => {
   const {addToast} = useToasts();
   const [loading, setLoading] = useState(false);
+  const [loadingManage, setLoadingManage] = useState(false);
   const [loadingSessions, setLoadingSessions] = useState(false);
   const [perPage, setPerPage] = useState(10);
   const [page, setPage] = useState(0);
@@ -85,10 +66,26 @@ const PatientProvider: React.FC = ({children}) => {
   const getAll = useCallback(async () => {
     setLoading(true);
     try {
-      updatePatientAll(() => {
-        return fake;
+      let params: any = {
+        perPage,
+        page,
+      };
+
+      if (search) {
+        params = {
+          ...params,
+          search,
+        };
+      }
+
+      const response = await api.get('/patients/', {
+        params,
       });
-      return fake;
+
+      updatePatientAll(() => {
+        return response.data;
+      });
+      return response.data;
     } catch (err) {
       return {
         count: 0,
@@ -97,7 +94,7 @@ const PatientProvider: React.FC = ({children}) => {
     } finally {
       setLoading(false);
     }
-  }, [updatePatientAll]);
+  }, [updatePatientAll, page, perPage, search]);
 
   const getPatientOne = useCallback(
     async (id: string) => {
@@ -164,30 +161,76 @@ const PatientProvider: React.FC = ({children}) => {
   const selectSession = useCallback((data: SessionData | null) => {
     setSessionSelected(data);
   }, []);
-  const SaveSession = useCallback(
-    (data: SessionData) => {
-      if (patientSelected) {
-        const newSession: SessionData = {
-          date: new Date().toISOString(),
-          body: '',
-          patientId: patientSelected.id,
-        };
+  // const SaveSession = useCallback(
+  //   (data: SessionData) => {
+  //     if (patientSelected) {
+  //       const newSession: SessionData = {
+  //         date: new Date().toISOString(),
+  //         body: '',
+  //         patientId: patientSelected.id,
+  //       };
 
-        updateSessionsAll((draft) => {
-          draft.count += 1;
-          draft.results.push(newSession);
-        });
-        setSessionSelected(newSession);
-      }
-    },
-    [patientSelected, updateSessionsAll],
-  );
+  //       updateSessionsAll((draft) => {
+  //         draft.count += 1;
+  //         draft.results.push(newSession);
+  //       });
+  //       setSessionSelected(newSession);
+  //     }
+  //   },
+  //   [patientSelected, updateSessionsAll],
+  // );
+
+  const createPatient = useCallback(async (data: PatientData) => {
+    setLoadingManage(true);
+    try {
+      const formData = converteDataToFromData(data);
+      await api.post('/patients', formData);
+      getAll();
+      addToast('Paciente criado com sucesso!', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+    } catch (err) {
+      addToast('Erro ao criar o paciente', {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } finally {
+      setLoadingManage(false);
+    }
+  }, []);
+
+  const updatePatient = useCallback(async (id: number, data: PatientData) => {
+    setLoadingManage(true);
+    try {
+      const formData = converteDataToFromData(data);
+      const response = await api.put(`/patients/${id}`, formData);
+      updatePatientAll((draft) => {
+        const findIndex = draft.results.findIndex((o) => o.id === id);
+        draft.results[findIndex] = response.data;
+      });
+      setPatientSelected(response.data);
+      addToast('Paciente atualizado com sucesso!', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+    } catch (err) {
+      console.log(err);
+      addToast('Erro ao atualizar o paciente', {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    } finally {
+      setLoadingManage(false);
+    }
+  }, []);
 
   return (
     <PatientContext.Provider
       value={{
         loading,
         loadingSessions,
+        loadingManage,
         patientAll,
         patientSelected,
         sessionSelected,
@@ -201,6 +244,8 @@ const PatientProvider: React.FC = ({children}) => {
         selectPatient,
         selectSession,
         getPatientOne,
+        createPatient,
+        updatePatient,
       }}>
       {children}
     </PatientContext.Provider>

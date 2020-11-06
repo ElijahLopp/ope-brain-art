@@ -11,10 +11,17 @@ import ButtonUploadComponent from '~/components/atoms/ButtonUpload';
 export const Container = styled.div``;
 export const DialogContainer = styled(Dialog)`
   padding: 0px;
+  position: relative;
+
+  .MuiDialog-paperScrollPaper {
+    display: flex;
+    height: calc(100% - 64px);
+    flex-direction: column;
+  }
 `;
 export const DialogContent = styled(DialogContentMui)`
   padding: 0px;
-  height: 390px;
+  height: calc(100vh - 344px);
 `;
 export const DialogTitle = styled(DialogTitleContentMui).attrs({
   disableTypography: true,
@@ -29,14 +36,13 @@ export const Title = styled(Typography).attrs({
 })`
   color: #fff;
   padding: 20px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
 `;
 export const AvatarContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-top: 10px;
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 20px;

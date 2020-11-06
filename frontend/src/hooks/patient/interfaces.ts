@@ -9,13 +9,27 @@ export interface SessionData {
   id?: string | number;
   date: string;
   body: string;
-  patientId: string | number;
+  patientId?: string | number;
   attachments?: AttachmentsData[];
 }
 
 export interface PatientData {
-  id: number;
-  name: string;
+  id?: number;
+  avatar: FileList | string | null;
+  nome: string;
+  email: string;
+  rg: string;
+  cpf: string;
+  nomeMae: string;
+  nomePai: string;
+  telefone: string;
+  celular: string;
+  rua: string;
+  bairro: string;
+  cep: string;
+  numero: number;
+  complemento: string;
+  dataNascimento: string;
 }
 export interface SessionsResponseData {
   count: number;
@@ -29,6 +43,7 @@ export interface PatientResponseData {
 export interface PatientContextData {
   loading: boolean;
   loadingSessions: boolean;
+  loadingManage: boolean;
   perPage: number;
   page: number;
   patientAll: PatientResponseData;
@@ -37,6 +52,8 @@ export interface PatientContextData {
   sessionSelected: SessionData | null;
   getAll: () => Promise<PatientResponseData>;
   getPatientOne: (id: string) => Promise<PatientData>;
+  createPatient: (data: PatientData) => Promise<void>;
+  updatePatient: (id: number, data: PatientData) => Promise<void>;
   selectPatient: (patient: PatientData) => void;
   selectSession: (session: SessionData | null) => void;
   changePage: (newPage: number) => void;
