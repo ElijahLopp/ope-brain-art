@@ -7,8 +7,14 @@ import {
   Param,
   Post,
   Put,
+  Query,
+  Res,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { CreatePatientBodyDTO } from './dto/post-create-patienr.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { editFileName, imageFileFilter } from '../../helpers/file-upload.utils';
 import { PatientService } from './patient.service';
 
 @Controller('patients')
@@ -17,19 +23,46 @@ export class PatientController {
 
   @Get()
   @HttpCode(200)
-  getPatient() {
-    return this.service.getPatient();
+  getPatient(@Query() { page, perPage, search }) {
+    return this.service.getPatient(page, perPage, search);
   }
   @Post()
   @HttpCode(201)
-  createPatient(@Body() body: CreatePatientBodyDTO) {
-    return this.service.createPatient(body);
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      storage: diskStorage({
+        destination: './avatars',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  createPatient(@Body() body: any, @UploadedFile() avatar: any) {
+    return this.service.createPatient(body, avatar);
+  }
+
+  @Get('avatars/:fileId')
+  serveAvatar(@Param('fileId') fileId, @Res() res) {
+    res.sendFile(fileId, { root: 'avatars' });
   }
 
   @Put(':id')
   @HttpCode(200)
-  updatePatient(@Body() body: any, @Param('id') id: number) {
-    return this.service.updatePatient(id, body);
+  @UseInterceptors(
+    FileInterceptor('avatar', {
+      storage: diskStorage({
+        destination: './avatars',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  updatePatient(
+    @Param('id') id: number,
+    @Body() body: any,
+    @UploadedFile() avatar: any,
+  ) {
+    return this.service.updatePatient(id, body, avatar);
   }
 
   @Delete(':id')

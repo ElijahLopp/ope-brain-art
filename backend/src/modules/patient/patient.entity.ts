@@ -12,6 +12,61 @@ export class Patient {
     nullable: false,
   })
   nome: string;
+  @Column('varchar', {
+    length: 150,
+    name: 'avatar',
+    nullable: true,
+  })
+  avatar: string;
+
+  @Column('varchar', {
+    length: 150,
+    name: 'email',
+    nullable: false,
+  })
+  email: string;
+
+  @Column('varchar', {
+    length: 20,
+    name: 'rg',
+    nullable: false,
+  })
+  rg: string;
+
+  @Column('varchar', {
+    length: 20,
+    name: 'cpf',
+    nullable: false,
+  })
+  cpf: string;
+
+  @Column('varchar', {
+    length: 150,
+    name: 'nome_mae',
+    nullable: false,
+  })
+  nomeMae: string;
+
+  @Column('varchar', {
+    length: 150,
+    name: 'nome_pai',
+    nullable: false,
+  })
+  nomePai: string;
+
+  @Column('varchar', {
+    length: 15,
+    name: 'telefone',
+    nullable: true,
+  })
+  telefone: string;
+
+  @Column('varchar', {
+    length: 15,
+    name: 'celular',
+    nullable: true,
+  })
+  celular: string;
 
   @Column('varchar', {
     length: 50,

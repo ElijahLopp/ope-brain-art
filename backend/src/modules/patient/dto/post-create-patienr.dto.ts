@@ -1,9 +1,25 @@
-import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { parse } from 'date-fns';
-export class CreatePatientBodyDTO {
+export class CreateOrUpdatePatientBodyDTO {
   @IsNotEmpty()
   nome: string;
+
+  @IsNotEmpty()
+  email: string;
+
+  @IsNotEmpty()
+  rg: string;
+  @IsNotEmpty()
+  cpf: string;
+
+  @IsNotEmpty()
+  nomeMae: string;
+
+  @IsNotEmpty()
+  nomePai: string;
+  @IsOptional()
+  telefone: string;
+  @IsOptional()
+  celular: string;
 
   @IsNotEmpty()
   rua: string;
@@ -21,9 +37,5 @@ export class CreatePatientBodyDTO {
   complemento: string;
 
   @IsOptional()
-  @Transform((value: string) => parse(value, 'dd/MM/yyyy', new Date()))
   dataNascimento: string;
-
-  @IsOptional()
-  foto: string;
 }

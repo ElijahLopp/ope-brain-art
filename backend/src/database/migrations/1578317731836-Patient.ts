@@ -19,6 +19,59 @@ export class Patient1578317731836 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'avatar',
+            type: 'varchar',
+            length: '150',
+            isNullable: true,
+          },
+          {
+            name: 'email',
+            type: 'varchar',
+            length: '150',
+            isNullable: false,
+          },
+          {
+            name: 'rg',
+            type: 'varchar',
+            length: '20',
+            isNullable: true,
+          },
+          {
+            name: 'cpf',
+            type: 'varchar',
+            length: '20',
+            isNullable: false,
+          },
+          {
+            name: 'nome_mae',
+            type: 'varchar',
+            length: '150',
+            isNullable: false,
+          },
+          {
+            name: 'nome_pai',
+            type: 'varchar',
+            length: '150',
+            isNullable: false,
+          },
+          {
+            name: 'telefone',
+            type: 'varchar',
+            length: '15',
+            isNullable: true,
+          },
+          {
+            name: 'celular',
+            type: 'varchar',
+            length: '15',
+            isNullable: true,
+          },
+          {
+            name: 'data_nascimento',
+            type: 'timestamp',
+            isNullable: true,
+          },
+          {
             name: 'rua',
             type: 'varchar',
             length: '50',
@@ -45,11 +98,6 @@ export class Patient1578317731836 implements MigrationInterface {
             name: 'complemento',
             type: 'varchar',
             length: '100',
-            isNullable: true,
-          },
-          {
-            name: 'data_nascimento',
-            type: 'timestamp',
             isNullable: true,
           },
           {

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreatePatientBodyDTO } from './dto/post-create-patienr.dto';
+import { omit } from 'lodash';
+import { Like, Repository } from 'typeorm';
 import { Patient } from './patient.entity';
 
 @Injectable()
@@ -10,13 +10,25 @@ export class PatientService {
     @InjectRepository(Patient)
     private readonly repo: Repository<Patient>,
   ) {}
-  async getPatient() {
-    const Contact = await this.repo.find();
-    return Contact;
+  async getPatient(page = 0, perPage = 10, search = '') {
+    const [result, total] = await this.repo.findAndCount({
+      where: { nome: Like('%' + search + '%') },
+      order: { nome: 'ASC' },
+      take: perPage,
+      skip: page * perPage,
+    });
+    return {
+      results: result,
+      count: total,
+    };
   }
-  async createPatient(body: CreatePatientBodyDTO) {
+  async createPatient(body: any, avatar: any) {
+    const newPatient = {
+      ...body,
+      avatar: avatar ? avatar.filename : null,
+    };
     try {
-      const response = await this.repo.save(body);
+      const response = await this.repo.save(newPatient);
       return response;
     } catch (err) {
       console.log(err);
@@ -26,12 +38,19 @@ export class PatientService {
       );
     }
   }
-  async updatePatient(id: number, body: CreatePatientBodyDTO) {
+  async updatePatient(id: number, body: any, avatar: any) {
+    let upPatient = omit(body, 'avatar');
+    if (avatar) {
+      upPatient = {
+        ...body,
+        avatar: avatar.filename,
+      };
+    }
     try {
-      const response = await this.repo.update(id, body);
+      await this.repo.update(id, upPatient);
       return await this.repo.findOne({ id });
     } catch (err) {
-      console.log(err);
+      console.log('err', err);
       throw new HttpException(
         'error update patient into database',
         HttpStatus.INTERNAL_SERVER_ERROR,

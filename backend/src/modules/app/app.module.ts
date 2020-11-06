@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { MulterModule } from '@nestjs/platform-express';
 import { SharedModule } from 'src/shared/shared.module';
 import { ConfigEnum } from '../../config/config.enum';
 import { ConfigService } from '../../config/config.service';
@@ -8,7 +9,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [PatientModule, SharedModule, DatabaseModule.orm()],
+  imports: [
+    PatientModule,
+    SharedModule,
+    DatabaseModule.orm(),
+    MulterModule.register({
+      dest: './avatars',
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
