@@ -1,3 +1,4 @@
+import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
 import AttachFileOutlinedIcon from '@material-ui/icons/AttachFileOutlined';
@@ -11,6 +12,8 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Editor} from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Loading from '~/components/atoms/Loading';
+import AttachmentCard from '~/components/molecules/AttachmentCard';
+import AttachmentUpload from '../AttachmentUpload';
 import {SessionManageProps} from './interfaces';
 import * as S from './styles';
 
@@ -34,11 +37,22 @@ const SessionManage: React.FC<SessionManageProps> = ({
     return EditorState.createWithContent(contentState);
   });
   const [editable, setEditable] = useState(data?.isNew);
+  const [openAttachment, setOpenAttachment] = useState<null | number>(null);
 
   const handleEditorChange = (content: any) => setEditorState(content);
   const handleEnableEditor = useCallback(() => {
     setEditable(!editable);
   }, [editable]);
+
+  const handleOpenAttachment = useCallback(() => {
+    if (data?.id) {
+      setOpenAttachment(data?.id);
+    }
+  }, [data]);
+
+  const handleCloseAttachment = useCallback(() => {
+    setOpenAttachment(null);
+  }, []);
 
   const handleSave = async () => {
     const body = draftToHtml(convertToRaw(editorState.getCurrentContent()));
@@ -92,7 +106,10 @@ const SessionManage: React.FC<SessionManageProps> = ({
           </Tooltip>
         )}
         <Tooltip title="Novo Anexo" aria-label="Novo Anexo">
-          <S.IconButton type="button" aria-label="Novo Anexo">
+          <S.IconButton
+            type="button"
+            aria-label="Novo Anexo"
+            onClick={handleOpenAttachment}>
             <AttachFileOutlinedIcon fontSize="small" />
           </S.IconButton>
         </Tooltip>
@@ -121,8 +138,20 @@ const SessionManage: React.FC<SessionManageProps> = ({
         <S.Divider />
         <S.AttachmentsList>
           <S.AttachmentsTitle>Anexos</S.AttachmentsTitle>
+          <S.AttachmentsGrid container spacing={2}>
+            <Grid item xs={12}>
+              <Grid container justify="flex-start" spacing={1}>
+                {data.attachments?.map((attachment) => (
+                  <Grid item key={attachment.uri}>
+                    <AttachmentCard data={attachment} />
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </S.AttachmentsGrid>
         </S.AttachmentsList>
       </S.ContainerRecord>
+      <AttachmentUpload open={openAttachment} onClose={handleCloseAttachment} />
     </S.Container>
   );
 };

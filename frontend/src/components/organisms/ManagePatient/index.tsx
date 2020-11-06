@@ -188,19 +188,6 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
                   type="text"
                   fullWidth
                 />
-                {/* <TextField
-                  id="date"
-                  name="dataNascimento"
-                  inputRef={register}
-                  label="Data de Nascimento"
-                  placeholder=""
-                  type="date"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                /> */}
-
                 <Controller
                   control={control}
                   name="dataNascimento"
@@ -282,7 +269,7 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
           </S.DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
-              Cancelar
+              Fechar
             </Button>
             <Button type="submit" color="primary">
               Salvar

@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {useToasts} from 'react-toast-notifications';
 import {useImmer} from 'use-immer';
+import {converteDataToFromData} from '~/helpers/session';
 import api from '~/services/api';
 import {SessionData, SessionsResponseData} from './interfaces';
 import SessionContext from './SessionContext';
@@ -8,6 +9,7 @@ import SessionContext from './SessionContext';
 const SessionProvider: React.FC = ({children}) => {
   const {addToast} = useToasts();
   const [loading, setLoading] = useState(false);
+  const [loadingAttachment, setLoadingAttachment] = useState(false);
   const [perPage, setPerPage] = useState(10);
   const [page, setPage] = useState(0);
   const [sessionSelected, setSessionSelected] = useState<SessionData | null>(
@@ -109,11 +111,18 @@ const SessionProvider: React.FC = ({children}) => {
           body: data,
         });
 
+        const findIndex = sessionsAll.results.findIndex((o) => o.id === id);
+
+        const upSession = {
+          ...sessionsAll.results[findIndex],
+          ...response.data,
+        };
+
+        console.log();
         updateSessionsAll((draft) => {
-          const findIndex = draft.results.findIndex((o) => o.id === id);
-          draft.results[findIndex] = response.data;
+          draft.results[findIndex] = upSession;
         });
-        setSessionSelected(response.data);
+        setSessionSelected(upSession);
       } catch (err) {
         addToast('Erro ao atualizar sessão', {
           appearance: 'error',
@@ -123,13 +132,57 @@ const SessionProvider: React.FC = ({children}) => {
         setLoading(false);
       }
     },
-    [updateSessionsAll, addToast],
+    [updateSessionsAll, addToast, sessionsAll],
+  );
+
+  const addAttachment = useCallback(
+    async (sessionId: number, data: any) => {
+      setLoadingAttachment(true);
+      try {
+        const formData = converteDataToFromData(data);
+        const response = await api.post(
+          `/sessions/${sessionId}/attachments`,
+          formData,
+        );
+        const findIndex = sessionsAll.results.findIndex(
+          (o) => o.id === sessionId,
+        );
+
+        const oldAttachments = sessionsAll.results[findIndex].attachments || [];
+
+        const upSession = {
+          ...sessionsAll.results[findIndex],
+          attachments: [...oldAttachments, response.data],
+        };
+
+        updateSessionsAll((draft) => {
+          draft.results[findIndex] = upSession;
+        });
+
+        setSessionSelected(upSession);
+
+        addToast('Arquivo anexado com sucesso', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      } catch (err) {
+        console.log(err);
+        addToast('Erro ao fazer upload do arquivo', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      } finally {
+        setLoadingAttachment(false);
+      }
+    },
+    [addToast, updateSessionsAll, sessionsAll],
   );
 
   return (
     <SessionContext.Provider
       value={{
         loading,
+        loadingAttachment,
         sessionSelected,
         sessionsAll,
         perPage,
@@ -141,6 +194,7 @@ const SessionProvider: React.FC = ({children}) => {
         saveSession,
         getAllSessionByPatient,
         getSessions,
+        addAttachment,
       }}>
       {children}
     </SessionContext.Provider>

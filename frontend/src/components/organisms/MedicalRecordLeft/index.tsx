@@ -40,10 +40,12 @@ const MedicalRecordLeft: React.FC<MedicalRecordLeftProps> = ({
   };
   const handleSelectedPatient = useCallback(
     (patient: PatientData) => {
-      selectPatient(patient);
-      patient?.id && getAllSessionByPatient(patient.id);
+      if (patient.id !== patientSelected?.id) {
+        selectPatient(patient);
+        patient?.id && getAllSessionByPatient(patient.id);
+      }
     },
-    [selectPatient, getAllSessionByPatient],
+    [selectPatient, getAllSessionByPatient, patientSelected],
   );
   const handleOpenManagePatient = useCallback(() => {
     openManagePatient({} as PatientData);

@@ -16,9 +16,7 @@ const PatientCard: React.FC<PatientCardProps> = ({
       <S.AvatarContainer uri={uriAvatar(data.avatar)} />
       <S.Content>
         <S.Name>{data.nome}</S.Name>
-        <S.Description>
-          AIOok okaposdkklm 00k,sd0wklop oo0vm 0asmopad
-        </S.Description>
+        <S.Description></S.Description>
       </S.Content>
     </S.Container>
   );

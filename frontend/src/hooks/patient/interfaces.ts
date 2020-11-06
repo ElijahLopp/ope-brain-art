@@ -1,19 +1,3 @@
-export interface AttachmentsData {
-  id: number;
-  uri: string;
-  type: string;
-
-  date: string;
-}
-export interface SessionData {
-  id?: number;
-  createdAt: string;
-  body: string;
-  attachments?: AttachmentsData[];
-
-  isNew?: boolean;
-}
-
 export interface PatientData {
   id?: number;
   avatar: FileList | string | null;
@@ -32,10 +16,7 @@ export interface PatientData {
   complemento: string;
   dataNascimento: string;
 }
-export interface SessionsResponseData {
-  count: number;
-  results: SessionData[];
-}
+
 export interface PatientResponseData {
   count: number;
   results: PatientData[];

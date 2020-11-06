@@ -1,4 +1,5 @@
 import DividerMUI from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
 import IconButtonMUI from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
@@ -18,11 +19,6 @@ export const Header = styled.div`
   border-bottom: 1px solid #ccc;
 `;
 
-export const Avatar = styled.div`
-  width: 50px;
-  height: 50px;
-  background: #454;
-`;
 export const ContainerRecord = styled.div`
   position: relative;
   overflow-y: scroll;
@@ -50,4 +46,7 @@ export const IconButton = styled(IconButtonMUI)``;
 
 export const Divider = styled(DividerMUI)`
   margin-top: 20px;
+`;
+export const AttachmentsGrid = styled(Grid)`
+  flex-grow: 1;
 `;

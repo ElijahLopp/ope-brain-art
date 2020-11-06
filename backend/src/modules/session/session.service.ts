@@ -11,6 +11,7 @@ export class SessionService {
   ) {}
   async getSessions(patientId: number, page = 0, perPage = 10) {
     const [result, total] = await this.repo.findAndCount({
+      relations: ['attachments'],
       where: {
         patient: { id: patientId },
       },
@@ -31,12 +32,9 @@ export class SessionService {
         },
         ...body,
       };
-
       const response = await this.repo.save(dataCreate);
-      console.log(response);
       return response;
     } catch (err) {
-      console.log(err);
       throw new HttpException(
         'error crete session into database',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -46,7 +44,7 @@ export class SessionService {
   async updateSession(id: number, body: { body: string }) {
     try {
       await this.repo.update(id, body);
-      return await this.repo.findOne({ id });
+      return await this.repo.findOne(id, { relations: ['attachments'] });
     } catch (err) {
       console.log(err);
       throw new HttpException(

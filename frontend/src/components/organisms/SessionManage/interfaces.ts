@@ -1,4 +1,5 @@
-import {PatientData, SessionData} from '~/hooks/patient/interfaces';
+import {PatientData} from '~/hooks/patient/interfaces';
+import {SessionData} from '~/hooks/session/interfaces';
 
 export interface SessionManageProps {
   data: SessionData;

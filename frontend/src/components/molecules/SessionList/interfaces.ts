@@ -1,4 +1,4 @@
-import {SessionData} from '~/hooks/patient/interfaces';
+import {SessionData} from '~/hooks/session/interfaces';
 
 export interface SessionListProps {
   onClick: (session: SessionData) => void;

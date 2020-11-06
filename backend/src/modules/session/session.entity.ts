@@ -3,9 +3,11 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Attachment } from '../attachment/attachment.entity';
 import { Patient } from '../patient/patient.entity';
 
 @Entity('session')
@@ -46,6 +48,12 @@ export class Session {
   )
   @JoinColumn({ name: 'patient_id' })
   patient: Patient;
+
+  @OneToMany(
+    () => Attachment,
+    attachment => attachment.session,
+  )
+  attachments: Attachment[];
   toJSON() {
     return classToPlain(this);
   }
