@@ -46,7 +46,6 @@ export class SessionService {
       await this.repo.update(id, body);
       return await this.repo.findOne(id, { relations: ['attachments'] });
     } catch (err) {
-      console.log(err);
       throw new HttpException(
         'error update session into database',
         HttpStatus.INTERNAL_SERVER_ERROR,

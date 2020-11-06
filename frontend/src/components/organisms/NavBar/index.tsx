@@ -5,6 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import React, {useCallback} from 'react';
 import {NavLink} from 'react-router-dom';
 import logoMain from '~/assets/images/logo-main/mainLogo.png';
+import {ROUTER_NAME} from '~/routes/constants';
 import * as S from './styles';
 
 const NavBar: React.FC = () => {
@@ -33,9 +34,19 @@ const NavBar: React.FC = () => {
                 key="Prontuario"
                 className="nav-content"
                 activeClassName="current"
-                to="prontuario">
+                to={ROUTER_NAME.MEDICAL_RECORD}>
                 <S.AssignmentIcon />
                 Prontuario
+              </NavLink>
+            </S.MenuItem>
+            <S.MenuItem>
+              <NavLink
+                key="Financeiro"
+                className="nav-content"
+                activeClassName="current"
+                to={ROUTER_NAME.FINANCE}>
+                <S.MdAccountBalanceWalletIcon />
+                Financeiro
               </NavLink>
             </S.MenuItem>
           </S.MenuContainer>

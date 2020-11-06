@@ -31,7 +31,6 @@ export class PatientService {
       const response = await this.repo.save(newPatient);
       return response;
     } catch (err) {
-      console.log(err);
       throw new HttpException(
         'error crete patient into database',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -50,7 +49,6 @@ export class PatientService {
       await this.repo.update(id, upPatient);
       return await this.repo.findOne({ id });
     } catch (err) {
-      console.log('err', err);
       throw new HttpException(
         'error update patient into database',
         HttpStatus.INTERNAL_SERVER_ERROR,

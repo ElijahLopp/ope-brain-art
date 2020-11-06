@@ -34,7 +34,6 @@ export class AttachmentService {
       const response = await this.repo.save(dataCreate);
       return response;
     } catch (err) {
-      console.log(err);
       throw new HttpException(
         'error add attachment into database',
         HttpStatus.INTERNAL_SERVER_ERROR,

@@ -90,14 +90,10 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
   }, []);
 
   const onSubmit = async (data: PatientData) => {
-    try {
-      if (isEdit) {
-        open?.id && (await updatePatient(open.id, data));
-      } else {
-        await createPatient(data);
-      }
-    } catch (error) {
-      console.log(error.response);
+    if (isEdit) {
+      open?.id && (await updatePatient(open.id, data));
+    } else {
+      await createPatient(data);
     }
   };
   return (

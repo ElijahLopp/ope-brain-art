@@ -1,5 +1,10 @@
 import {darken} from '@material-ui/core';
-import {MdAssignmentInd, MdEventNote, MdExitToApp} from 'react-icons/md';
+import {
+  MdAccountBalanceWallet,
+  MdAssignmentInd,
+  MdEventNote,
+  MdExitToApp,
+} from 'react-icons/md';
 import styled from 'styled-components';
 
 export const MenuItem = styled.div`
@@ -36,6 +41,11 @@ export const ScheduleIcon = styled(MdEventNote)`
   font-size: 20px;
 `;
 export const AssignmentIcon = styled(MdAssignmentInd)`
+  color: #fff;
+  margin-right: 8px;
+  font-size: 20px;
+`;
+export const MdAccountBalanceWalletIcon = styled(MdAccountBalanceWallet)`
   color: #fff;
   margin-right: 8px;
   font-size: 20px;

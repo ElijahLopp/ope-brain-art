@@ -117,8 +117,6 @@ const SessionProvider: React.FC = ({children}) => {
           ...sessionsAll.results[findIndex],
           ...response.data,
         };
-
-        console.log();
         updateSessionsAll((draft) => {
           draft.results[findIndex] = upSession;
         });
@@ -166,7 +164,6 @@ const SessionProvider: React.FC = ({children}) => {
           autoDismiss: true,
         });
       } catch (err) {
-        console.log(err);
         addToast('Erro ao fazer upload do arquivo', {
           appearance: 'error',
           autoDismiss: true,

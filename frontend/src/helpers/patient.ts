@@ -6,7 +6,6 @@ export const converteDataToFromData = (data: any) => {
     if (key === 'file') {
       formData.append('avatar', data.file.length >= 1 ? data.file[0] : null);
     } else if (key === 'dataNascimento') {
-      console.log();
       formData.append(
         'dataNascimento',
         typeof data.dataNascimento === 'object'

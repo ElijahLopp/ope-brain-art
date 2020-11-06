@@ -142,7 +142,6 @@ const PatientProvider: React.FC = ({children}) => {
           autoDismiss: true,
         });
       } catch (err) {
-        console.log(err);
         addToast('Erro ao atualizar o paciente', {
           appearance: 'error',
           autoDismiss: true,

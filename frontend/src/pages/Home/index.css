@@ -1,0 +1,42 @@
+/* custom code start*/
+#EventLog b {
+  color: #388e3c;
+}
+
+hr {
+  margin: 1px 10px 1px 0px;
+  border-top: 1px solid #eee;
+}
+/* custom code end*/
+
+.treeview-title-container{
+  display: inline-block;
+  width: 20%;
+  padding-left: 20px;
+  text-align: left;
+  font-weight: 700;
+  font-size: large;
+}
+
+.treeview-component{
+  float: right;
+  width: 20%;
+  height: 450px;
+}
+
+.e-schedule .e-schedule-toolbar .e-icon-schedule-print::before {
+  content: '\e973';
+}
+
+.e-schedule .e-schedule-toolbar .e-icon-schedule-pdf::before {
+  content: '\e7c8';
+}
+
+.custom-field-row {
+  margin-bottom: 20px;
+}
+
+.multi-prop div {
+  padding-left: 0;
+  padding-top: 0;
+}
