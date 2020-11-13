@@ -62,7 +62,7 @@ export class Views extends SampleBase {
   }
 
   public field: Object = {
-    dataSource: dataSource.Patient,
+    dataSource: dataSource.Schedule,
     id: 'Id',
     text: 'Name',
   };
