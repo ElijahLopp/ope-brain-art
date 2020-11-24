@@ -1,0 +1,24 @@
+Host
+ec2-52-22-216-69.compute-1.amazonaws.com
+Database
+dfl9bhtoqhj6k8
+User
+ohvuxdzzthwaet
+Port
+5432
+Password
+963478d5eb792827204bd8a6080444d14a29cb9d4f9a354595970bcd3a392d72
+URI
+postgres://ohvuxdzzthwaet:963478d5eb792827204bd8a6080444d14a29cb9d4f9a354595970bcd3a392d72@ec2-52-22-216-69.compute-1.amazonaws.com:5432/dfl9bhtoqhj6k8
+
+
+
+ var firebaseConfig = {
+    apiKey: "AIzaSyA_B6eLy0oZVz9cPbsVhTiY5jQWqjYVnwc",
+    authDomain: "brainart-8dda1.firebaseapp.com",
+    databaseURL: "https://brainart-8dda1.firebaseio.com",SW
+    projectId: "brainart-8dda1",
+    storageBucket: "brainart-8dda1.appspot.com",
+    messagingSenderId: "68850424860",
+    appId: "1:68850424860:web:1d327f27a7e6b0284693d9"
+  };

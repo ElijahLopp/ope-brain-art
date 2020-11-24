@@ -1,5 +1,7 @@
 import { classToPlain, Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Schedule } from '../schedule/schedule.entity';
+import { Session } from '../session/session.entity';
 
 @Entity('patient')
 export class Patient {
@@ -12,6 +14,61 @@ export class Patient {
     nullable: false,
   })
   nome: string;
+  @Column('varchar', {
+    length: 150,
+    name: 'avatar',
+    nullable: true,
+  })
+  avatar: string;
+
+  @Column('varchar', {
+    length: 150,
+    name: 'email',
+    nullable: false,
+  })
+  email: string;
+
+  @Column('varchar', {
+    length: 20,
+    name: 'rg',
+    nullable: false,
+  })
+  rg: string;
+
+  @Column('varchar', {
+    length: 20,
+    name: 'cpf',
+    nullable: false,
+  })
+  cpf: string;
+
+  @Column('varchar', {
+    length: 150,
+    name: 'nome_mae',
+    nullable: false,
+  })
+  nomeMae: string;
+
+  @Column('varchar', {
+    length: 150,
+    name: 'nome_pai',
+    nullable: false,
+  })
+  nomePai: string;
+
+  @Column('varchar', {
+    length: 15,
+    name: 'telefone',
+    nullable: true,
+  })
+  telefone: string;
+
+  @Column('varchar', {
+    length: 15,
+    name: 'celular',
+    nullable: true,
+  })
+  celular: string;
 
   @Column('varchar', {
     length: 50,
@@ -75,6 +132,16 @@ export class Patient {
   })
   deletedAt: string;
 
+  @OneToMany(
+    () => Session,
+    session => session.patient,
+  )
+  sessions: Session[];
+  @OneToMany(
+    () => Schedule,
+    schedule => schedule.patient,
+  )
+  schedules: Session[];
   toJSON() {
     return classToPlain(this);
   }
