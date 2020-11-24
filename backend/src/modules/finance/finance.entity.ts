@@ -6,30 +6,26 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Finance } from '../finance/finance.entity';
 import { Patient } from '../patient/patient.entity';
+import { Schedule } from '../schedule/schedule.entity';
 
-@Entity('schedule')
-export class Schedule {
+@Entity('finance')
+export class Finance {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('timestamp', {
-    name: 'start',
+  @Column('varchar', {
+    length: 15,
+    name: 'paid',
     nullable: false,
   })
-  start: Date;
+  paid: string;
 
-  @Column('timestamp', {
-    name: 'end',
+  @Column('float', {
+    name: 'valor',
     nullable: false,
   })
-  end: Date;
-  @Column('int', {
-    name: 'status',
-    nullable: false,
-  })
-  status: number;
+  valor: number;
 
   @Column('timestamp', {
     name: 'created_at',
@@ -54,16 +50,17 @@ export class Schedule {
 
   @OneToOne(
     () => Patient,
-    patient => patient.schedules,
+    patient => patient.finances,
   )
   @JoinColumn({ name: 'patient_id' })
   patient: Patient;
 
   @OneToOne(
-    () => Finance,
-    finance => finance.schedule,
+    () => Schedule,
+    schedule => schedule.finance,
   )
-  finance: Finance;
+  @JoinColumn({ name: 'schedule_id' })
+  schedule: Schedule;
   toJSON() {
     return classToPlain(this);
   }

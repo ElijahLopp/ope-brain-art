@@ -1,93 +1,162 @@
-import {
-  checkBoxChange,
-  ColumnDirective,
-  ColumnsDirective,
-  GridComponent,
-  Inject,
-  Page,
-  Filter,
-  Edit,
-  EditSettingsModel
-} from '@syncfusion/ej2-react-grids';
-import { DataManager, UrlAdaptor } from '@syncfusion/ej2-data';
-import { CheckBox } from '@syncfusion/ej2-react-buttons';
-import * as React from 'react';
-import './index.css';
-import { SampleBase } from '../../sample-base';
-import * as dataSource from '../../datasource.json';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import MUIDataTable, {
+  debounceSearchRender,
+  MUIDataTableColumn,
+} from 'mui-datatables';
+import React, {useEffect} from 'react';
+import Loading from '~/components/atoms/Loading';
+import useFinanceContext from '~/hooks/finance/useFinanceContext';
+import * as S from './styles';
 
-const baseURL: string = 'http://localhost:8080'
-const data: DataManager = new DataManager({
-  adaptor: new UrlAdaptor(),
-  insertUrl: baseURL + '/financeiro'
-});
+const Finance: React.FC = () => {
+  const {
+    getFinances,
+    financesAll,
+    updateFinancePaid,
+    loading,
+    onSort,
+    onSearch,
+  } = useFinanceContext();
+  useEffect(() => {
+    getFinances();
+  }, []);
 
-const editOptions: EditSettingsModel = { allowEditing: true };
+  const columns: MUIDataTableColumn[] = [
+    {
+      name: 'id',
+      label: 'Transação',
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      name: 'patient',
+      label: 'Paciente',
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      name: 'date',
+      label: 'Data Realizada',
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value) => {
+          const formatter = new Intl.DateTimeFormat('pt-BR', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          });
 
-export class Finance extends SampleBase {
-  render() {
-    return (
-      <div className="control-pane">
-        <div className="control-section">
-          <div style={{ display: 'inline-block' }}>
-            <div style={{ width: '70%' }} className="grid">
-              <h3 className="title">Lista de pagamento</h3>
-              <GridComponent
-                id="Grid"
-                allowPaging={true}
-                pageSettings={{ pageSize: 10 }}
-                dataSource={dataSource.Schedule}
-                allowFiltering={true}
-                editSettings={editOptions}>
-                <ColumnsDirective>
-                  <ColumnDirective
-                    field="Name"
-                    headerText="Paciente"
-                    width="100"
-                    textAlign="Left"></ColumnDirective>
-                  <ColumnDirective
-                    field="responsible"
-                    headerText="Responsável"
-                    width="100"
-                    textAlign="Left"></ColumnDirective>
-                    <ColumnDirective
-                      field="contact"
-                      headerText="Contato"
-                      width="100"
-                      textAlign="Left"
-                    ></ColumnDirective>
-                  <ColumnDirective
-                    field="StartTime"
-                    headerText="Data Realizada"
-                    width="130"
-                    textAlign="Left"
-                    format='dMy'
-                    editType='datepickeredit'></ColumnDirective>
-                  <ColumnDirective
-                    field="Value"
-                    headerText="Valor"
-                    width="130"
-                    format="C2"
-                    editType='numericedit'
-                    textAlign="Left"></ColumnDirective>
-                  <ColumnDirective
-                    field="paid"
-                    headerText="Pago"
-                    displayAsCheckBox={true}
-                    type='boolean'
-                    width='90'
-                    allowFiltering={false}
-                    editType='booleanEdit'
-                  ></ColumnDirective>
-                </ColumnsDirective>
-                <Inject services={[Page, Filter, Edit]} />
-              </GridComponent>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+          return formatter.format(new Date(value));
+        },
+      },
+    },
+    {
+      name: 'valor',
+      label: 'Valor',
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value) => {
+          const nf = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+
+          return nf.format(value);
+        },
+      },
+    },
+    {
+      name: 'paid',
+      label: 'Recebido',
+      options: {
+        filter: false,
+        sort: true,
+        customBodyRender: (value: any, tableMeta, updateValue) => {
+          return (
+            <FormControlLabel
+              label={value === 'yes' ? 'Sim' : 'Não'}
+              value={value === 'yes' ? 'yes' : 'no'}
+              control={
+                <Switch
+                  color="primary"
+                  checked={value === 'yes' ? true : false}
+                  value={value === 'yes' ? 'yes' : 'no'}
+                />
+              }
+              onChange={(event: any) => {
+                const paid = event.target.value === 'no' ? 'yes' : 'no';
+                const id = tableMeta.rowData[0];
+                updateFinancePaid(id, paid);
+                updateValue(paid);
+              }}
+            />
+          );
+        },
+      },
+    },
+  ];
+  return (
+    <S.Container>
+      <Loading active={loading} />
+      <MUIDataTable
+        title={'Financeiro'}
+        data={financesAll.results}
+        columns={columns}
+        options={{
+          filter: false,
+          count: financesAll.count,
+          serverSide: true,
+          elevation: 0,
+          search: false,
+          customSearchRender: debounceSearchRender(500),
+          selectableRows: 'none',
+          onSearchChange: onSearch,
+          onColumnSortChange: onSort,
+          searchPlaceholder: 'Pequisa pelo paciente',
+          textLabels: {
+            body: {
+              noMatch: 'Desculpe, nenhum registro encontrado',
+              toolTip: 'Ordenar',
+              columnHeaderTooltip: (column) => `Ordenado por ${column.label}`,
+            },
+            pagination: {
+              next: 'Proxima',
+              previous: 'Anterior',
+              rowsPerPage: 'Registro por pagina:',
+              displayRows: 'de',
+            },
+            toolbar: {
+              search: 'Pesquisar',
+              downloadCsv: 'Download CSV',
+              print: 'Imprimir',
+              viewColumns: 'Exibição de Colunas',
+              filterTable: 'Filtrar',
+            },
+            filter: {
+              all: 'Todos',
+              title: 'Filtros',
+              reset: 'REDEFINIR',
+            },
+            viewColumns: {
+              title: 'Exibir Colunas',
+              titleAria: 'Exibir/Ocultar Colunas',
+            },
+          },
+        }}
+      />
+    </S.Container>
+  );
+};
 
 export default Finance;

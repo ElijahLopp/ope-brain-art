@@ -5,6 +5,7 @@ import { ConfigEnum } from '../../config/config.enum';
 import { ConfigService } from '../../config/config.service';
 import { DatabaseModule } from '../../database/database.module';
 import { AttachmentModule } from '../attachment/attachment.module';
+import { FinanceModule } from '../finance/finance.module';
 import { PatientModule } from '../patient/patient.module';
 import { ScheduleModule } from '../schedule/schedule.module';
 import { SessionModule } from '../session/session.module';
@@ -18,6 +19,7 @@ import { AppService } from './app.service';
     SessionModule,
     AttachmentModule,
     ScheduleModule,
+    FinanceModule,
     DatabaseModule.orm(),
     MulterModule.register({
       dest: './avatars',

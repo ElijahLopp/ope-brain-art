@@ -78,7 +78,7 @@ const ManageSchedule: React.FC<ManageScheduleProps> = ({open, onClose}) => {
         }
       }, 500);
     },
-    [searchPatient, openAuto, options],
+    [searchPatient, options],
   );
 
   return (

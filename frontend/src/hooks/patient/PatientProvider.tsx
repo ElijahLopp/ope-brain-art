@@ -153,23 +153,26 @@ const PatientProvider: React.FC = ({children}) => {
     [addToast, updatePatientAll],
   );
 
-  const searchPatient = useCallback(async (text: string) => {
-    try {
-      let params: any = {
-        search: text,
-      };
-      const response = await api.get('/patients/', {
-        params,
-      });
-      return response.data.results;
-    } catch (err) {
-      addToast('Erro ao buscar o paciente', {
-        appearance: 'error',
-        autoDismiss: true,
-      });
-    }
-    return [];
-  }, []);
+  const searchPatient = useCallback(
+    async (text: string) => {
+      try {
+        let params: any = {
+          search: text,
+        };
+        const response = await api.get('/patients/', {
+          params,
+        });
+        return response.data.results;
+      } catch (err) {
+        addToast('Erro ao buscar o paciente', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
+      return [];
+    },
+    [addToast],
+  );
   //----------------- SESSIONS ---------------------//
   return (
     <PatientContext.Provider

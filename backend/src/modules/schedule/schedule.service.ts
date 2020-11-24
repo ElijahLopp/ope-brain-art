@@ -1,6 +1,7 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { FinanceService } from '../finance/finance.service';
 import { Schedule } from './schedule.entity';
 
 @Injectable()
@@ -8,6 +9,8 @@ export class ScheduleService {
   constructor(
     @InjectRepository(Schedule)
     private readonly repo: Repository<Schedule>,
+
+    @Inject(FinanceService) private serviceFinance: FinanceService,
   ) {}
   async getSchedules() {
     const result = await this.repo.find({
@@ -28,6 +31,19 @@ export class ScheduleService {
       };
       const response = await this.repo.save(dataCreate);
 
+      const dataCreateFinance = {
+        patient: {
+          id: body.patient.id,
+        },
+        schedule: {
+          id: response.id,
+        },
+        valor: body.valorConsulta,
+        paid: 'no',
+      };
+
+      const teste = await this.serviceFinance.createFinance(dataCreateFinance);
+
       const result = await this.repo.findOne({
         relations: ['patient'],
         where: {
@@ -36,6 +52,7 @@ export class ScheduleService {
       });
       return result;
     } catch (err) {
+      console.log(err);
       throw new HttpException(
         'error crete session into database',
         HttpStatus.INTERNAL_SERVER_ERROR,
