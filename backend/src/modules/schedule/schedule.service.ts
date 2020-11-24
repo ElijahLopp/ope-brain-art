@@ -14,7 +14,7 @@ export class ScheduleService {
   ) {}
   async getSchedules() {
     const result = await this.repo.find({
-      relations: ['patient'],
+      relations: ['patient', 'finance'],
       order: { start: 'DESC' },
     });
     return result;
@@ -45,7 +45,7 @@ export class ScheduleService {
       const teste = await this.serviceFinance.createFinance(dataCreateFinance);
 
       const result = await this.repo.findOne({
-        relations: ['patient'],
+        relations: ['patient', 'finance'],
         where: {
           id: response.id,
         },

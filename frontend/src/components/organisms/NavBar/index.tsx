@@ -5,13 +5,15 @@ import Tooltip from '@material-ui/core/Tooltip';
 import React, {useCallback} from 'react';
 import {NavLink} from 'react-router-dom';
 import logoMain from '~/assets/images/logo-main/mainLogo.png';
+import {useAuth} from '~/hooks/auth';
 import {ROUTER_NAME} from '~/routes/constants';
 import * as S from './styles';
 
 const NavBar: React.FC = () => {
+  const {signOut} = useAuth();
   const handleLogout = useCallback(() => {
-    console.log('logout');
-  }, []);
+    signOut();
+  }, [signOut]);
   return (
     <>
       <AppBar position="fixed">

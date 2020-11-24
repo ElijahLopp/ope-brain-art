@@ -1,4 +1,5 @@
 import React, {createContext, useCallback, useContext, useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import {useToasts} from 'react-toast-notifications';
 import {getNamePathLocalStorageApp} from '~/config';
 import api from '~/services/api';
@@ -9,6 +10,7 @@ const pathLocalStorage = getNamePathLocalStorageApp();
 
 const AuthProvider: React.FC = ({children}) => {
   const {addToast} = useToasts();
+  const history = useHistory();
 
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem(`${pathLocalStorage}:token`);
@@ -29,20 +31,7 @@ const AuthProvider: React.FC = ({children}) => {
   const signIn = useCallback(
     async ({email, password, remember}) => {
       setLoading(true);
-      console.log(email);
       try {
-        // const response = await api.post('auth/login', {login, password});
-
-        // const {token, user} = response.data;
-
-        // if (!hasPermission(user.profileIds[0])) {
-        //   addToast('Login sem permissão de acesso!', {
-        //     appearance: 'error',
-        //     autoDismiss: true,
-        //   });
-        //   return false;
-        // }
-
         const token = 'sdjiosd09owe0994okpoopd90swe';
         const user = {
           id: 1,
@@ -63,6 +52,8 @@ const AuthProvider: React.FC = ({children}) => {
           profile: user.profile,
         });
 
+        history.replace('/');
+
         return true;
       } catch (err) {
         addToast('Login e/ou senha inválidos!', {
@@ -74,7 +65,7 @@ const AuthProvider: React.FC = ({children}) => {
         setLoading(false);
       }
     },
-    [addToast],
+    [addToast, history],
   );
 
   const onForgotPassword = useCallback(async (login) => {
@@ -159,7 +150,7 @@ const AuthProvider: React.FC = ({children}) => {
     localStorage.removeItem(`${pathLocalStorage}:token`);
     localStorage.removeItem(`${pathLocalStorage}:user`);
     setData({} as AuthState);
-    await api.get('/auth/logoff');
+    // await api.get('/auth/logoff');
   }, []);
 
   return (

@@ -48,7 +48,10 @@ const ManageSchedule: React.FC<ManageScheduleProps> = ({open, onClose}) => {
     if (isEdit) {
       const result: any = open;
       setValue(result.patient);
-      reset(result);
+      reset({
+        ...result,
+        valorConsulta: result.finance.valor,
+      });
     } else {
       setValue(null);
       reset({start: open?.start, end: open?.end, status: 1} as any);
