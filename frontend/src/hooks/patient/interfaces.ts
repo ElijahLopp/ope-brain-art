@@ -37,4 +37,5 @@ export interface PatientContextData {
   changePage: (newPage: number) => void;
   changePerPage: (newPerPage: number) => void;
   onSearch: (text: string) => void;
+  searchPatient: (text: string) => Promise<PatientData[]>;
 }

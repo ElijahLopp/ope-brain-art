@@ -6,6 +6,7 @@ import { ConfigService } from '../../config/config.service';
 import { DatabaseModule } from '../../database/database.module';
 import { AttachmentModule } from '../attachment/attachment.module';
 import { PatientModule } from '../patient/patient.module';
+import { ScheduleModule } from '../schedule/schedule.module';
 import { SessionModule } from '../session/session.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,6 +17,7 @@ import { AppService } from './app.service';
     SharedModule,
     SessionModule,
     AttachmentModule,
+    ScheduleModule,
     DatabaseModule.orm(),
     MulterModule.register({
       dest: './avatars',
