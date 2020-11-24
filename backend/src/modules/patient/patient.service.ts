@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { omit } from 'lodash';
-import { Like, Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import { Patient } from './patient.entity';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class PatientService {
   ) {}
   async getPatient(page = 0, perPage = 10, search = '') {
     const [result, total] = await this.repo.findAndCount({
-      where: { nome: Like('%' + search + '%') },
+      where: { nome: Raw(alias => `${alias} ILIKE '%${search}%'`) },
       order: { nome: 'ASC' },
       take: perPage,
       skip: page * perPage,

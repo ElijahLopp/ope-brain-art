@@ -1,104 +1,71 @@
-import {extend} from '@syncfusion/ej2-base';
-import {
-  CellClickEventArgs,
-  Day,
-  DragAndDrop,
-  Inject,
-  Month,
-  Resize,
-  ScheduleComponent,
-  ViewDirective,
-  ViewsDirective,
-  Week,
-  WorkWeek,
-} from '@syncfusion/ej2-react-schedule';
-import * as React from 'react';
-import * as dataSource from '~/datasource.json';
-import {applyCategoryColor} from '~/helper';
-import {SampleBase} from '~/sample-base';
-import './index.css';
+import {clone} from 'lodash';
+import moment from 'moment';
+import 'moment/locale/pt-br';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Calendar, momentLocalizer} from 'react-big-calendar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import Loading from '~/components/atoms/Loading';
+import CalendarToolbar from '~/components/molecules/CalendarToolbar';
+import ManageSchedule from '~/components/organisms/ManageSchedule';
+import useScheduleContext from '~/hooks/schedule/useScheduleContext';
+import * as S from './styles';
 
-/**
- * Schedule views sample
- */
-export class Views extends SampleBase {
-  private scheduleObj!: ScheduleComponent;
+const localizer = momentLocalizer(moment);
 
-  private data: Object[] = extend(
-    [],
-    (dataSource as any).Schedule,
-    {},
-    true,
-  ) as Object[];
+const Home: React.FC = () => {
+  const {schedulesAll, getSchedules, loading} = useScheduleContext();
+  const [open, setOpen] = useState<any>(null);
 
-  private viewOptions: {[key: string]: Object}[] = [
-    {text: 'Day', value: 'Day'},
-    {text: 'Week', value: 'Week'},
-    {text: 'WorkWeek', value: 'WorkWeek'},
-    {text: 'Month', value: 'Month'},
-  ];
+  useEffect(() => {
+    getSchedules();
+  }, [getSchedules]);
 
-  onViewChange(args: any) {
-    this.scheduleObj.currentView = args.value;
-    this.scheduleObj.dataBind();
-  }
-
-  onEventRendered(args: any) {
-    applyCategoryColor(args, this.scheduleObj.currentView);
-  }
-
-  onTreeDragStop(args: any): void {
-    const cellData: CellClickEventArgs = this.scheduleObj.getCellDetails(
-      args.target,
-    );
-    if (cellData != null) {
-      const eventData: {[key: string]: object} = {
-        Subject: args.draggedNodeData.text,
-        StartTime: cellData.startTime,
-        EndTime: cellData.endTime,
-      };
-      this.scheduleObj.addEvent(eventData);
+  const handleSelect = useCallback(({start, end}) => {
+    const dateStart = clone(start);
+    const dateEnd = clone(end);
+    if (start === end) {
+      dateEnd.setMinutes(dateEnd.getMinutes() + 45);
     }
-  }
+    const data = {
+      start: dateStart.toISOString(),
+      end: dateEnd.toISOString(),
+    };
+    setOpen(data);
+  }, []);
+  const handleSelectEvent = useCallback((event) => {
+    setOpen(event);
+  }, []);
+  const handleEventPropGetter = useCallback((event) => {
+    const color: any = {
+      1: '#3174ad',
+      2: '#047004',
+      3: '#9e0606',
+    };
+    return {style: {backgroundColor: color[event.status]}};
+  }, []);
+  const handleOnClose = useCallback(() => {
+    setOpen(null);
+  }, []);
+  return (
+    <S.Container>
+      <Loading active={loading} />
+      <Calendar
+        selectable
+        localizer={localizer}
+        events={schedulesAll}
+        views={['week', 'day', 'month', 'work_week']}
+        defaultView="month"
+        scrollToTime={new Date(1970, 1, 1, 6)}
+        defaultDate={new Date()}
+        titleAccessor={(event) => event.patient.nome}
+        onSelectEvent={handleSelectEvent}
+        onSelectSlot={handleSelect}
+        components={{toolbar: CalendarToolbar}}
+        eventPropGetter={handleEventPropGetter}
+      />
+      <ManageSchedule open={open} onClose={handleOnClose} />
+    </S.Container>
+  );
+};
 
-  public field: Object = {
-    dataSource: dataSource.Schedule,
-    id: 'Id',
-    text: 'Name',
-  };
-
-  render() {
-    return (
-      <div className="schedule-control-section">
-        <div className="col-lg-9 control-section">
-          <div className="control-wrapper">
-            <ScheduleComponent
-              height="calc(100vh - 64px)"
-              ref={(schedule) => {
-                if (schedule != null) {
-                  this.scheduleObj = schedule;
-                }
-              }}
-              dateFormat="dd/MM/yyyy"
-              selectedDate={new Date(2020, 9, 25)}
-              eventSettings={{dataSource: this.data}}
-              eventRendered={this.onEventRendered.bind(this)}
-              actionComplete={(data) => console.log(data)}>
-              <ViewsDirective>
-                <ViewDirective option="Day" />
-                <ViewDirective option="Week" />
-                <ViewDirective option="WorkWeek" />
-                <ViewDirective option="Month" />
-              </ViewsDirective>
-              <Inject
-                services={[Day, Week, WorkWeek, Month, Resize, DragAndDrop]}
-              />
-            </ScheduleComponent>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-export default Views;
+export default Home;

@@ -1,5 +1,6 @@
 import { classToPlain, Exclude } from 'class-transformer';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Schedule } from '../schedule/schedule.entity';
 import { Session } from '../session/session.entity';
 
 @Entity('patient')
@@ -136,6 +137,11 @@ export class Patient {
     session => session.patient,
   )
   sessions: Session[];
+  @OneToMany(
+    () => Schedule,
+    schedule => schedule.patient,
+  )
+  schedules: Session[];
   toJSON() {
     return classToPlain(this);
   }
