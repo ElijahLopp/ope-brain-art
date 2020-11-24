@@ -1,12 +1,9 @@
 .control-pane {
   margin-top: 30px;
 }
-.margin-top {
-  margin-top: -15px;
+.grid {
+  margin-left: 20px;
 }
-.firstgrid {
-  padding-left: 10px;
-}
-.lastgrid {
-  padding-right: 10px;
+.title{
+  margin-left: 5px;
 }
