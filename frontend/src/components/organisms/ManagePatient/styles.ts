@@ -9,6 +9,11 @@ import styled from 'styled-components';
 import ButtonUploadComponent from '~/components/atoms/ButtonUpload';
 
 export const Container = styled.div``;
+
+export const ButtonDelete = styled.div`
+  flex: 1;
+`;
+
 export const DialogContainer = styled(Dialog)`
   padding: 0px;
   position: relative;

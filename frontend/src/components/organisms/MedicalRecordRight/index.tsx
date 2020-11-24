@@ -30,6 +30,7 @@ const MedicalRecordRight: React.FC<MedicalRecordRightProps> = ({
     changePerPage,
     changePage,
     getSessions,
+    removeSession,
   } = useSessionContext();
 
   const handleChangePage = useCallback(
@@ -61,6 +62,16 @@ const MedicalRecordRight: React.FC<MedicalRecordRightProps> = ({
     },
     [selectSession],
   );
+  const handleRemoveSession = useCallback(
+    async (id: number) => {
+      if (patientSelected?.id) {
+        return await removeSession(id, patientSelected?.id);
+      } else {
+        return false;
+      }
+    },
+    [selectSession, patientSelected],
+  );
 
   useEffect(() => {
     patientSelected?.id && getSessions(patientSelected.id);
@@ -79,7 +90,6 @@ const MedicalRecordRight: React.FC<MedicalRecordRightProps> = ({
       </S.Container>
     );
   }
-
   const handleNewSession = () => {
     if (patientSelected?.id) {
       createSession(patientSelected.id);
@@ -149,6 +159,7 @@ const MedicalRecordRight: React.FC<MedicalRecordRightProps> = ({
           loading={loading}
           goBackClick={handleSessionGoBackClick}
           onSave={saveSession}
+          removeSession={handleRemoveSession}
         />
       )}
     </>

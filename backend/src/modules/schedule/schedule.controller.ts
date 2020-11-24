@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -22,6 +23,11 @@ export class ScheduleController {
   @HttpCode(200)
   updateSchedule(@Param('id') id: number, @Body() body: any) {
     return this.service.updateSchedule(id, body);
+  }
+  @Delete(':id')
+  @HttpCode(204)
+  deleteSchedule(@Param('id') id: number) {
+    return this.service.deleteSchedule(id);
   }
 
   @Post()

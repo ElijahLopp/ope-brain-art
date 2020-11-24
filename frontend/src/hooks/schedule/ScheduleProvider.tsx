@@ -65,6 +65,34 @@ const ScheduleProvider: React.FC = ({children}) => {
     },
     [updateSchedulesAll, addToast],
   );
+
+  const removeSchedule = useCallback(
+    async (id: number) => {
+      setLoadingManage(true);
+      try {
+        await api.delete(`/schedules/${id}`);
+        updateSchedulesAll(() => {
+          const data = schedulesAll.filter((o) => o.id !== id);
+          return [...data];
+        });
+        addToast('Agendamento removido com sucesso!', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        return true;
+      } catch (err) {
+        addToast('Erro ao remover agendamento', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+        return false;
+      } finally {
+        setLoadingManage(false);
+      }
+    },
+    [updateSchedulesAll, addToast, schedulesAll],
+  );
+
   const updateSchedule = useCallback(
     async (id: number, data: ScheduleData) => {
       setLoadingManage(true);
@@ -106,6 +134,7 @@ const ScheduleProvider: React.FC = ({children}) => {
         createSchedule,
         updateSchedule,
         getSchedules,
+        removeSchedule,
       }}>
       {children}
     </ScheduleContext.Provider>

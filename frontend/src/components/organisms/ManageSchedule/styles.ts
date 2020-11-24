@@ -39,6 +39,9 @@ export const AvatarContainer = styled.div`
   padding-right: 20px;
   padding-bottom: 20px;
 `;
+export const ButtonDelete = styled.div`
+  flex: 1;
+`;
 export const AvatarGroup = styled.div`
   position: relative;
 `;

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpCode,
   Param,
   Post,
@@ -25,6 +26,11 @@ export class SessionController {
   @HttpCode(200)
   updateSession(@Param('id') id: number, @Body() body: any) {
     return this.service.updateSession(id, body);
+  }
+  @Delete(':id')
+  @HttpCode(204)
+  deleteSession(@Param('id') id: number) {
+    return this.service.deleteSession(id);
   }
 
   @Post(':id/attachments')

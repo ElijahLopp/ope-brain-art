@@ -30,6 +30,7 @@ export interface SessionContextData {
   createSession: (patientId: number) => Promise<void>;
   addAttachment: (sessionId: number, data: any) => Promise<void>;
   saveSession: (id: number, data: string) => Promise<void>;
+  removeSession: (id: number, patientId: number) => Promise<boolean>;
   selectSession: (session: SessionData | null) => void;
   changePage: (newPage: number, patientId: number) => void;
   changePerPage: (newPerPage: number, patientId: number) => void;

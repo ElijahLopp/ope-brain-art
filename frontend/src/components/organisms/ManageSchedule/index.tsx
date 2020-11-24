@@ -1,6 +1,10 @@
 import {
   Button,
+  Dialog,
   DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   InputLabel,
   MenuItem,
@@ -22,9 +26,15 @@ import * as S from './styles';
 
 const ManageSchedule: React.FC<ManageScheduleProps> = ({open, onClose}) => {
   const theme = useTheme();
-  const {createSchedule, updateSchedule, loadingManage} = useScheduleContext();
+  const {
+    createSchedule,
+    updateSchedule,
+    loadingManage,
+    removeSchedule,
+  } = useScheduleContext();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [openAuto, setOpenAuto] = React.useState(false);
+  const [openRemove, setOpenRemove] = React.useState(false);
   const [options, setOptions] = React.useState<any[]>([]);
   const [value, setValue] = React.useState<any>(null);
   const isEdit = !!(typeof open === 'object' && open?.id);
@@ -50,6 +60,20 @@ const ManageSchedule: React.FC<ManageScheduleProps> = ({open, onClose}) => {
     setValue(null);
     setOptions([]);
     onClose();
+  };
+
+  const handleOpenRemove = () => {
+    setOpenRemove(true);
+  };
+
+  const handleCloseRemove = () => {
+    setOpenRemove(false);
+  };
+
+  const handleRemoveSchedule = async () => {
+    const successRemove = await removeSchedule(open.id);
+    setOpenRemove(false);
+    if (successRemove) onClose();
   };
 
   const onSubmit = async (data: any) => {
@@ -175,7 +199,7 @@ const ManageSchedule: React.FC<ManageScheduleProps> = ({open, onClose}) => {
                     labelId="status-label"
                     id="status-select"
                     name={name}>
-                    <MenuItem value={1}>aguadando</MenuItem>
+                    <MenuItem value={1}>aguardando</MenuItem>
                     <MenuItem value={3}>cancelado</MenuItem>
                     <MenuItem value={2}>concluido</MenuItem>
                   </Select>
@@ -195,6 +219,14 @@ const ManageSchedule: React.FC<ManageScheduleProps> = ({open, onClose}) => {
             />
           </S.DialogContent>
           <DialogActions>
+            {isEdit && (
+              <S.ButtonDelete>
+                <Button onClick={handleOpenRemove} color="secondary">
+                  Remover
+                </Button>
+              </S.ButtonDelete>
+            )}
+
             <Button onClick={handleClose} color="primary">
               Fechar
             </Button>
@@ -204,6 +236,31 @@ const ManageSchedule: React.FC<ManageScheduleProps> = ({open, onClose}) => {
           </DialogActions>
         </form>
       </S.DialogContainer>
+
+      <Dialog
+        open={openRemove}
+        onClose={handleCloseRemove}
+        maxWidth="sm"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">
+          {'Deseja realmente remover o agendamento?'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Ao remover o agendamento, será removido o pagamento vinculado a esse
+            agendamento
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseRemove} color="primary">
+            Não
+          </Button>
+          <Button onClick={handleRemoveSchedule} color="primary" autoFocus>
+            Sim
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

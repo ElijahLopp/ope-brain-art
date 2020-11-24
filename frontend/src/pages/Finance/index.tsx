@@ -20,7 +20,7 @@ const Finance: React.FC = () => {
   } = useFinanceContext();
   useEffect(() => {
     getFinances();
-  }, []);
+  }, [getFinances]);
 
   const columns: MUIDataTableColumn[] = [
     {

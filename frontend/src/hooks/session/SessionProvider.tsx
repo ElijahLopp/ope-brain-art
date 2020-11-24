@@ -175,6 +175,31 @@ const SessionProvider: React.FC = ({children}) => {
     [addToast, updateSessionsAll, sessionsAll],
   );
 
+  const removeSession = useCallback(
+    async (id: number, patientId: number) => {
+      setLoading(true);
+      try {
+        await api.delete(`/sessions/${id}`);
+        await getSessions(patientId);
+        setSessionSelected(null);
+        addToast('Sessão removido com sucesso!', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        return true;
+      } catch (err) {
+        addToast('Erro ao remover sessão', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+        return false;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [updateSessionsAll, addToast, sessionsAll],
+  );
+
   return (
     <SessionContext.Provider
       value={{
@@ -192,6 +217,7 @@ const SessionProvider: React.FC = ({children}) => {
         getAllSessionByPatient,
         getSessions,
         addAttachment,
+        removeSession,
       }}>
       {children}
     </SessionContext.Provider>

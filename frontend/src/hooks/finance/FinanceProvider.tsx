@@ -9,7 +9,7 @@ const FinanceProvider: React.FC = ({children}) => {
   const {addToast} = useToasts();
   const [perPage, setPerPage] = useState(10);
   const [page, setPage] = useState(0);
-  const [sort, setSort] = useState<{
+  const [sort] = useState<{
     changedColumn: string;
     direction: 'desc' | 'asc';
   }>({
@@ -67,7 +67,7 @@ const FinanceProvider: React.FC = ({children}) => {
     async (data: FinanceData) => {
       setLoadingManage(true);
       try {
-        const response = await api.post(`/finances`, data);
+        await api.post(`/finances`, data);
         // updateFinancesAll((draft) => {
         //   draft.push(response.data);
         // });
@@ -84,7 +84,7 @@ const FinanceProvider: React.FC = ({children}) => {
         setLoadingManage(false);
       }
     },
-    [updateFinancesAll, addToast],
+    [addToast],
   );
 
   const updateFinance = useCallback(
@@ -115,7 +115,7 @@ const FinanceProvider: React.FC = ({children}) => {
         setLoadingManage(false);
       }
     },
-    [updateFinancesAll, addToast, financesAll],
+    [addToast],
   );
 
   const updateFinancePaid = useCallback(
@@ -152,7 +152,7 @@ const FinanceProvider: React.FC = ({children}) => {
   );
 
   const onSort = useCallback((changedColumn, direction) => {
-    console.log(changedColumn, direction);
+    // console.log(changedColumn, direction);
   }, []);
 
   const changePerPage = useCallback(
@@ -174,7 +174,6 @@ const FinanceProvider: React.FC = ({children}) => {
   );
   const onSearch = useCallback(
     (text) => {
-      console.log(text);
       setSearch(text);
     },
     [setSearch],

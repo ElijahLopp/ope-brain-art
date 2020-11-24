@@ -8,4 +8,5 @@ export interface SessionManageProps {
   loading: boolean;
   goBackClick: () => void;
   onSave: (id: number, body: string) => Promise<void>;
+  removeSession: (id: number) => Promise<boolean>;
 }

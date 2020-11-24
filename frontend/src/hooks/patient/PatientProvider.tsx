@@ -153,6 +153,37 @@ const PatientProvider: React.FC = ({children}) => {
     [addToast, updatePatientAll],
   );
 
+  const removePatient = useCallback(
+    async (id: number) => {
+      setLoadingManage(true);
+      try {
+        await api.delete(`/patients/${id}`);
+        updatePatientAll(() => {
+          const data = patientAll.results.filter((o) => o.id !== id);
+          return {
+            count: patientAll.count - 1,
+            results: [...data],
+          };
+        });
+        setPatientSelected(null);
+        addToast('Paciente removido com sucesso!', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+        return true;
+      } catch (err) {
+        addToast('Erro ao remover paciente', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+        return false;
+      } finally {
+        setLoadingManage(false);
+      }
+    },
+    [updatePatientAll, addToast, patientAll],
+  );
+
   const searchPatient = useCallback(
     async (text: string) => {
       try {
@@ -173,7 +204,7 @@ const PatientProvider: React.FC = ({children}) => {
     },
     [addToast],
   );
-  //----------------- SESSIONS ---------------------//
+
   return (
     <PatientContext.Provider
       value={{
@@ -192,6 +223,7 @@ const PatientProvider: React.FC = ({children}) => {
         createPatient,
         updatePatient,
         searchPatient,
+        removePatient,
       }}>
       {children}
     </PatientContext.Provider>

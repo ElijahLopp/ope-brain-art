@@ -52,4 +52,15 @@ export class SessionService {
       );
     }
   }
+
+  async deleteSession(id: number) {
+    try {
+      await this.repo.delete(id);
+    } catch (err) {
+      throw new HttpException(
+        'error delete session into database',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

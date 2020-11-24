@@ -1,7 +1,16 @@
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core';
+import Dialog from '@material-ui/core/Dialog';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
 import AttachFileOutlinedIcon from '@material-ui/icons/AttachFileOutlined';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import {format} from 'date-fns';
@@ -23,6 +32,7 @@ const SessionManage: React.FC<SessionManageProps> = ({
   patient,
   data,
   loading,
+  removeSession,
 }) => {
   const editorRef: any = useRef();
 
@@ -36,6 +46,7 @@ const SessionManage: React.FC<SessionManageProps> = ({
     );
     return EditorState.createWithContent(contentState);
   });
+  const [openRemove, setOpenRemove] = React.useState(false);
   const [editable, setEditable] = useState(data?.isNew);
   const [openAttachment, setOpenAttachment] = useState<null | number>(null);
 
@@ -72,6 +83,21 @@ const SessionManage: React.FC<SessionManageProps> = ({
   const setEditorReference = (ref: any) => {
     editorRef.current = ref;
   };
+
+  const handleOpenRemove = useCallback(() => {
+    setOpenRemove(true);
+  }, []);
+
+  const handleCloseRemove = useCallback(() => {
+    setOpenRemove(false);
+  }, []);
+
+  const handleRemoveSession = useCallback(async () => {
+    if (data?.id) {
+      await removeSession(data.id);
+      handleCloseRemove();
+    }
+  }, [data, handleCloseRemove]);
 
   return (
     <S.Container>
@@ -113,6 +139,16 @@ const SessionManage: React.FC<SessionManageProps> = ({
             <AttachFileOutlinedIcon fontSize="small" />
           </S.IconButton>
         </Tooltip>
+        {!editable && (
+          <Tooltip title="Remover" aria-label="Remover">
+            <S.IconButton
+              type="button"
+              aria-label="remover"
+              onClick={handleOpenRemove}>
+              <DeleteOutlineIcon fontSize="small" />
+            </S.IconButton>
+          </Tooltip>
+        )}
       </S.Header>
       <S.ContainerRecord>
         <S.DescriptionRecord>
@@ -152,6 +188,30 @@ const SessionManage: React.FC<SessionManageProps> = ({
         </S.AttachmentsList>
       </S.ContainerRecord>
       <AttachmentUpload open={openAttachment} onClose={handleCloseAttachment} />
+
+      <Dialog
+        open={openRemove}
+        onClose={handleCloseRemove}
+        maxWidth="sm"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">
+          {'Deseja realmente remover a sessão?'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Ao remover a sessão, será removido todos os dados da sessão
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseRemove} color="primary">
+            Não
+          </Button>
+          <Button onClick={handleRemoveSession} color="primary" autoFocus>
+            Sim
+          </Button>
+        </DialogActions>
+      </Dialog>
     </S.Container>
   );
 };

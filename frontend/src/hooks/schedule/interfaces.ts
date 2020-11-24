@@ -22,5 +22,6 @@ export interface ScheduleContextData {
   getSchedules: () => Promise<void>;
   createSchedule: (data: any) => Promise<void>;
   updateSchedule: (id: number, data: ScheduleData) => Promise<void>;
+  removeSchedule: (id: number) => Promise<boolean>;
   selectSchedule: (schedule: ScheduleData | null) => void;
 }

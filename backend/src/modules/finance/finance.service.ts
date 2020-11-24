@@ -50,7 +50,6 @@ export class FinanceService {
       });
       return result;
     } catch (err) {
-      console.log(err);
       throw new HttpException(
         'error crete finance into database',
         HttpStatus.INTERNAL_SERVER_ERROR,

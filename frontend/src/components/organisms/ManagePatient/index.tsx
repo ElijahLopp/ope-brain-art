@@ -1,7 +1,11 @@
 import {
   Box,
   Button,
+  Dialog,
   DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Paper,
   Tab,
   Tabs,
@@ -56,12 +60,18 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
     uriAvatar(open?.avatar || null),
   );
   const theme = useTheme();
+  const [openRemove, setOpenRemove] = React.useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [selectedTab, setSelectedTab] = React.useState(0);
   const isEdit = !!(typeof open === 'object' && open?.id);
 
   const {register, handleSubmit, reset, control} = useForm();
-  const {createPatient, updatePatient, loadingManage} = usePatientContext();
+  const {
+    createPatient,
+    updatePatient,
+    loadingManage,
+    removePatient,
+  } = usePatientContext();
   useEffect(() => {
     if (isEdit) {
       const result: any = open;
@@ -88,6 +98,22 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
   const handleChangePreview = useCallback((file) => {
     setAvatarPreview(file);
   }, []);
+
+  const handleOpenRemove = useCallback(() => {
+    setOpenRemove(true);
+  }, []);
+
+  const handleCloseRemove = useCallback(() => {
+    setOpenRemove(false);
+  }, []);
+
+  const handleRemovePaciente = useCallback(async () => {
+    if (open?.id) {
+      const successRemove = await removePatient(open.id);
+      setOpenRemove(false);
+      if (successRemove) onClose();
+    }
+  }, [onClose, removePatient, open]);
 
   const onSubmit = async (data: PatientData) => {
     if (isEdit) {
@@ -264,6 +290,13 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
             </SwipeableViews>
           </S.DialogContent>
           <DialogActions>
+            {isEdit && (
+              <S.ButtonDelete>
+                <Button onClick={handleOpenRemove} color="secondary">
+                  Remover
+                </Button>
+              </S.ButtonDelete>
+            )}
             <Button onClick={handleClose} color="primary">
               Fechar
             </Button>
@@ -273,6 +306,31 @@ const ManagePatient: React.FC<ManagePatientProps> = ({open, onClose}) => {
           </DialogActions>
         </form>
       </S.DialogContainer>
+
+      <Dialog
+        open={openRemove}
+        onClose={handleCloseRemove}
+        maxWidth="sm"
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">
+          {'Deseja realmente remover o paciente?'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Ao remover o paciente, será removido todos os pagamentos,
+            agendamentos, sessões vinculado a esse paciente
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseRemove} color="primary">
+            Não
+          </Button>
+          <Button onClick={handleRemovePaciente} color="primary" autoFocus>
+            Sim
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

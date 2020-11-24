@@ -33,6 +33,7 @@ export interface PatientContextData {
   getPatientOne: (id: string) => Promise<PatientData>;
   createPatient: (data: PatientData) => Promise<void>;
   updatePatient: (id: number, data: PatientData) => Promise<void>;
+  removePatient: (id: number) => Promise<boolean>;
   selectPatient: (patient: PatientData) => void;
   changePage: (newPage: number) => void;
   changePerPage: (newPerPage: number) => void;

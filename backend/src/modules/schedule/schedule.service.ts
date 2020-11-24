@@ -52,7 +52,6 @@ export class ScheduleService {
       });
       return result;
     } catch (err) {
-      console.log(err);
       throw new HttpException(
         'error crete session into database',
         HttpStatus.INTERNAL_SERVER_ERROR,
@@ -74,6 +73,16 @@ export class ScheduleService {
     } catch (err) {
       throw new HttpException(
         'error update schedule into database',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+  async deleteSchedule(id: number) {
+    try {
+      await this.repo.delete(id);
+    } catch (err) {
+      throw new HttpException(
+        'error delete schedule into database',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
